@@ -72,14 +72,41 @@ extensions = [
     "sphinx.ext.ifconfig",
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
+    # manually added below extensions
     "myst_parser",
+    "sphinx.ext.duration",
+    "sphinx.ext.autosectionlabel",
 ]
+
+# manually added
+myst_enable_extensions = [
+    "dollarmath",
+    "amsmath",
+    "deflist",
+    "fieldlist",
+    "html_admonition",
+    "html_image",
+    "colon_fence",
+    "smartquotes",
+    "replacements",
+    # "linkify",
+    # "strikethrough",
+    "substitution",
+    "tasklist",
+]
+myst_number_code_blocks = ["typescript"]
+myst_heading_anchors = 3
+myst_footnote_transition = True
+myst_dmath_double_inline = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 
 # The suffix of source filenames.
-source_suffix = ".rst"
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.md': 'markdown',
+}
 
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'
@@ -155,6 +182,7 @@ todo_emit_warnings = True
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 html_theme = "alabaster"
+# html_theme = "sphinx_book_theme"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -163,6 +191,22 @@ html_theme_options = {
     "sidebar_width": "300px",
     "page_width": "1200px"
 }
+
+# If using sphinx_book_theme
+'''
+html_logo = "_static/logo.svg"
+html_favicon = "_static/logo.svg"
+html_title = ""
+html_theme_options = {
+    "home_page_in_toc": True,
+    "github_url": "",
+    "repository_url": "",
+    "repository_branch": "main",
+    "path_to_docs": "docs",
+    "use_repository_button": True,
+    "use_edit_page_button": True,
+}
+'''
 
 # Add any paths that contain custom themes here, relative to this directory.
 # html_theme_path = []
