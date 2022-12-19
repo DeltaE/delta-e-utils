@@ -40,6 +40,19 @@ Description of repository
 - [Datasets](https://github.com/DeltaE)
 - [Authors](https://github.com/DeltaE)
 
+## To install 
+1. Clone the repository 
+
+`git clone https://github.com/DeltaE/delta-e-utils.git`
+
+2. Move into the new repository 
+
+`cd delta-e-utils`
+
+3. Install the package in editing mode
+
+`pip install -U pip setuptools -e .`
+
 ## Note
 
 This project has been set up using PyScaffold 4.3. For details and usage
