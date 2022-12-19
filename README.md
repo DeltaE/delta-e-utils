@@ -35,10 +35,11 @@ Description of repository
 
 ## Contents 
 
-- [Contributing](https://github.com/DeltaE)
-- [API Reference](https://github.com/DeltaE)
-- [Datasets](https://github.com/DeltaE)
-- [Authors](https://github.com/DeltaE)
+- [Overview](https://delta-e.readthedocs.io/en/latest/)
+- [Contributing](https://delta-e.readthedocs.io/en/latest/contributing.html)
+- [API Reference](https://delta-e.readthedocs.io/en/latest/api/modules.html)
+- [Datasets](https://delta-e.readthedocs.io/en/latest/)
+- [Authors](https://delta-e.readthedocs.io/en/latest/authors.html)
 
 ## To install 
 1. Clone the repository 
@@ -52,8 +53,3 @@ Description of repository
 3. Install the package in editing mode
 
 `pip install -U pip setuptools -e .`
-
-## Note
-
-This project has been set up using PyScaffold 4.3. For details and usage
-information on PyScaffold see <https://pyscaffold.org/>.
