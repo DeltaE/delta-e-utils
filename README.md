@@ -25,7 +25,8 @@
 %      :target: https://twitter.com/delta-e 
 -->
 
-![Project generated with PyScaffold](https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold)
+[![Documentation Status](https://readthedocs.org/projects/delta-e/badge/?version=latest)](https://delta-e.readthedocs.io/en/latest/?badge=latest)
+[![Project generated with PyScaffold](https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold)](https://pyscaffold.org/en/stable/)
 
 # delta-e utility functions 
 
