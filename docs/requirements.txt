@@ -6,3 +6,5 @@ sphinx>=3.2.1
 pandas
 pytest
 myst-parser
+sphinx_theme
+tkinter
