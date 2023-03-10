@@ -27,46 +27,21 @@ L. Citation Requirements: Write down any publisher specified citation requiremen
 M. Additional Information: Indicate any additional information not included here that can be useful for the use of this dataset
 
 N.  Taglist Descriptions: The following are the standarised list section and a check mark on the drop down list can be use for any and all items on the list
-	i.	Sector: The economic sector which the datasets relate to. Tags under this description include:
-		- Agriculture
-		- Residential
-		- Commercial
-		- Industrial
-		- Transportation
-		- Power
-
-	ii.	Uses: What is the subject use of the dataset. Tags under this description include:
-		- Demand
-		- Generation
-		- Transmition
-		- Infrastructure
-		- Storage
-
-	iii.Area of focus: Which topics in sustainability and energy does the data touch on. Tags under this description include:
-		- Technical
-		- Environment
-		- Economic
-		- Social
-
-	iv.	Data Type: What type of data is included in the dataset. Tags under this description include:
-		- Geospatial
-		- Tabular
-		- Timeseries
-
-	v.	Resource Carrier: The method of which a use is implemented through. Tags under this description include:
-		- Water
-		- Gas
-		- Wind
-		- Oil
-		- Biomass
-		- Heating/Cooling
-		- Hydro
-		- Temperature
-		- Land
-		- Solar
-		- Nuclear
-		- Emissions
-		- Waste
-		- Hydrogen
-		- Geothermal
-		- Electricity
+| Sector         | Uses           | Area of Focus | Data Type  | Resource Carrier |
+| -------------- | -------------- | ------------- | ---------- | ---------------- |
+| Agriculture    | Demand         | Technical     | Geospatial | Water            |
+| Residential    | Generation     | Enviroment    | Tabular    | Gas              |
+| Commercial     | Transmition    | Economic      | Timeseries | Wind             |
+| Industrial     | Infrasturcture | Social        |            | Oil              |
+| Transportation | Storage        |               |            | Biomass          |
+| Power          |                |               |            | Heating/Cooling  |
+|                |                |               |            | Hydro            |
+|                |                |               |            | Temperature      |
+|                |                |               |            | Land             |
+|                |                |               |            | Solar            |
+|                |                |               |            | Nuclear          |
+|                |                |               |            | Emissions        |
+|                |                |               |            | Waste            |
+|                |                |               |            | Hydrogen         |
+|                |                |               |            | Geothermal       |
+|                |                |               |            | Electricity      |
