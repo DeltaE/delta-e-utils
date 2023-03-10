@@ -26,7 +26,7 @@ L. Citation Requirements: Write down any publisher specified citation requiremen
 
 M. Additional Information: Indicate any additional information not included here that can be useful for the use of this dataset
 
-N.  Taglist Descriptions: The following are the standarised list section and a check mark on the drop down list can be use for any and all items on the list
+N.  Taglist Descriptions: The following are the standarised list section and a check mark on the drop down list can be used for any and/or all items on the list
 | Sector         | Uses           | Area of Focus | Data Type  | Resource Carrier |
 | -------------- | -------------- | ------------- | ---------- | ---------------- |
 | Agriculture    | Demand         | Technical     | Geospatial | Water            |
