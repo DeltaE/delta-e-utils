@@ -1,6 +1,4 @@
-### **1. Adding Datasets**
-
-### **2. Form Question Descriptions**
+# **2. Form Question Descriptions**
     
 **A. Researcher Name:** Name of the researcher inputting the dataset in Read the Doc
 
@@ -28,8 +26,22 @@
 
 **M. Additional Information:** Indicate any additional information not included here that can be useful for the use of this dataset
 
-**N.  Taglist Descriptions:** The following are the standarised list section and a check mark on the drop down list can be used for any and/or all items on the list
-| Sector         | Uses           | Area of Focus | Data Type  | Resource Carrier |
+**N.  Taglist Descriptions:** The following are the standarised taglists and a check mark on the drop down list can be used for any and/or all items on the list
+
+**Taglist Headers:**
+
+Sector: The business sector which the datasets relate to
+
+Uses: What is the subject use of the dataset
+
+Subject focus (subject): Which subject matter does the dataset address
+
+Data Type (dtype): What type of data is included in the dataset
+
+Resource Carrier (ReCar): The method of which a use is implemented through
+ 
+
+| Sector         | Uses           | Subject       | Dtype      | ReCar            |
 | -------------- | -------------- | ------------- | ---------- | ---------------- |
 | Agriculture    | Demand         | Technical     | Geospatial | Water            |
 | Residential    | Generation     | Enviroment    | Tabular    | Gas              |
@@ -47,6 +59,3 @@
 |                |                |               |            | Hydrogen         |
 |                |                |               |            | Geothermal       |
 |                |                |               |            | Electricity      |
-
-### **3. Searching for Datasets**
-
