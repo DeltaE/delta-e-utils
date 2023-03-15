@@ -5,3 +5,5 @@ After deciding that a dataset is useful for your research and could be useful fo
 Use Page 2 of this how to guide to help with filling the form. After filling the form (what to do after).
 
 Now the dataset is ready to be found in read the doc by Delta E+ researchers!
+
+For more complex datasets ensure to write a notebook of how to run the scripts and any additional tips and tricks required to aquire the data from the scripts.
