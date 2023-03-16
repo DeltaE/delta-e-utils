@@ -6,7 +6,7 @@ This repository was created in order to facilitate the research projects of Delt
 
 Note that the repository is not intended to be used to store any of the used datasets and is only intended for pulling datasets from their original sources.
 
-Maintaining this repository by Delta E+ members by contniously adding datasets is extremely important for its success. If a researcher finds and uses a dataset for one of ther projects they are expected to fill the form and add the dataset information to the Read the Docs.
+Maintaining this repository by Delta E+ members by continuously adding datasets is extremely important for its success. If a researcher finds and uses a dataset for one of their projects they are expected to fill the form and add the dataset information to the Read the Docs.
 
 The 'How to' pages are intended to be used by resarchers to figure out how to add datasets, search through datasets, and edit dataset information.
 
