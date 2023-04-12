@@ -75,7 +75,8 @@ extensions = [
     # manually added below extensions
     "myst_parser",
     "sphinx.ext.duration",
-    "sphinx.ext.autosectionlabel",
+    #"sphinx.ext.autosectionlabel",
+    #"recommonmark"
 ]
 
 # manually added
@@ -181,16 +182,19 @@ todo_emit_warnings = True
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = "alabaster"
-# html_theme = "sphinx_book_theme"
+
+import sphinx_theme
+html_theme = 'stanford_theme'
+html_theme_path = [sphinx_theme.get_html_theme_path('stanford-theme')]
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
+'''
 html_theme_options = {
     "sidebar_width": "300px",
     "page_width": "1200px"
-}
+}'''
 
 # If using sphinx_book_theme
 '''
