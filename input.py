@@ -396,7 +396,7 @@ class FormUI:
                 tag_str+='\n'
                 for value in values:
                     # Add the tag and values to the tag_str
-                    tag_str += f', {tag}:{value}'
+                    tag_str += f'{tag}:{value}, '
                 tag_str+='\n'
         return tag_str
 
