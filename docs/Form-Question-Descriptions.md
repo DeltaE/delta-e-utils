@@ -1,5 +1,7 @@
 # **3. Form Question Descriptions**
-    
+
+## **Section 1. General Information**
+
 **A. Researcher Name:** Name of the researcher inputting the dataset in Read the Doc
 
 **B. Project Name:** Choose the name of the project the researcher is using the dataset for.
@@ -12,6 +14,8 @@
 
 **F. Private or Public:** Indicate whether the dataset is publicly available or if it is private and requires special requests to access.
 
+## **Section 2. Spatial and Temporal Information**
+
 **G. Region:** Indicate the lowest regional level available within the dataset. Region levels are described as World > Continent > Country.
 
 **H. Time Horizon:** Indicate the dataset timespan from the beginning of the acquired data and to the last available data point. Only year is required to be entered. If the dataset is continuously updating, add the time of the first available data point and present in the to side. If the dataset does not include a time horizon, write when the dataset was created.
@@ -19,6 +23,8 @@
 **I. Spatial resolution:** If land size is included in the dataset, include the spatial resolution within the specified ranges. Ranges are in km2. If land size is in other formats, convert to km2.
 
 **J. Temporal Resolution:** If temporal resolution is included in the dataset include the resolution(s) included within the data.
+
+## **Section 3. Using the dataset**
 
 **K. Link to Access:** Include the access links or methodology for how to access the datasets, as well as any requirements or contacts to access and use the dataset.
 
