@@ -7,4 +7,4 @@ pandas
 pytest
 myst-parser
 sphinx_theme
-tkinter
+tk
