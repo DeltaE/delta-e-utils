@@ -132,6 +132,7 @@ Citation requirements : Long written answer
 """
 import os
 import subprocess
+import copy
 
 import tkinter as tk
 from tkinter import messagebox, font
@@ -145,6 +146,7 @@ class FormUI:
         self.current_section = 0
         self.sections = []
         self.form_data = {}
+        self.tags_data = {}
 
         # Add an image
         img = Image.open('docs/_static/Logo2.png')
@@ -160,42 +162,43 @@ class FormUI:
         # create sections
         widgets_1 = [
             {"type": "entry", "label_text": "Researcher Name:"},
-            {"type": "dropdown", "label_text": "Project name", "options": ['Atlantic Canada', 'BC Nexus', 'BC PyPSA', 'Canada-USA', 'CLEWs Canada', 'CLEWs Global', 'CLEWs Kenya', 'Energy Storage Modelling', 'Fleet Electrification', 'LCA', 'Laos Cascading Hydro', 'OSeMOSYS Global', 'Vancouver Island PyPSA'], "multi_select": False},
+            {"type": "dropdown", "label_text": "Project name", "options": ['Atlantic Canada', 'BC Nexus', 'BC PyPSA', 'Canada-USA', 'CLEWs Canada', 'CLEWs Global', 'CLEWs Kenya', 'Energy Storage Modelling', 'Fleet Electrification', 'LCA', 'Laos Cascading Hydro', 'OSeMOSYS Global', 'Vancouver Island PyPSA'], "multi_select": False, "Tags": False},
             {"type": "entry", "label_text": "Dataset name"},
+            {"type": "text", "label_text": "Description"},
             {"type": "entry", "label_text": "Version"},
-            {"type": "dropdown", "label_text": "Private or public", "options": ["Private", "Public"], "multi_select": False}
+            {"type": "dropdown", "label_text": "Private or public", "options": ["Private", "Public"], "multi_select": False, "Tags": False}
         ]
-        section_1 = self.create_section("Section 1", widgets_1)
+        section_1 = self.create_section("General Information", widgets_1)
 
         widgets_2 = [
-            {"type": "dropdown", "label_text": "Region:", "options": ["World", "Continent", "Country"], "multi_select": False},
-            {"type": "dropdown", "label_text": "Time Horizon From", "options": [2010,2011], "multi_select": False},
-            {"type": "dropdown", "label_text": "Time Horizon To", "options": [2010,2011], "multi_select": False},
+            {"type": "dropdown", "label_text": "Region:", "options": ["World", "Continent", "Country"], "multi_select": False, "Tags": False},
+            {"type": "dropdown", "label_text": "Time Horizon From", "options": list(range(1990, 2101)), "multi_select": False, "Tags": False},
+            {"type": "dropdown", "label_text": "Time Horizon To", "options": list(range(1990, 2101)), "multi_select": False, "Tags": False},
 
-            {"type": "dropdown", "label_text": "Spatial Resolution (km^2)", "options": ['1-10', '10-100', '100-1000', '>1000'], "multi_select": False},
-            {"type": "dropdown", "label_text": "Temporal Resolution", "options": ['Years', 'Months', 'Days', 'Hours', 'Minutes', 'Seconds'], "multi_select": True},
-            {"type": "dropdown", "label_text": "Sector", "options": ['Agriculture', 'Residential', 'Commercial', 'Industrial', 'Transportation', 'Power'], "multi_select": True}
+            {"type": "dropdown", "label_text": "Spatial Resolution (km^2)", "options": ['N/A','1-10', '10-100', '100-1000', '>1000'], "multi_select": False, "Tags": False},
+            {"type": "dropdown", "label_text": "Temporal", "options": ['Years', 'Months', 'Days', 'Hours', 'Minutes', 'Seconds'], "multi_select": True, "Tags": True},
+            {"type": "dropdown", "label_text": "Sector", "options": ['Agriculture', 'Residential', 'Commercial', 'Industrial', 'Transportation', 'Power'], "multi_select": True, "Tags": True}
         ]
-        section_2 = self.create_section("Section 2", widgets_2)
+        section_2 = self.create_section("Spatial and Temporal Information", widgets_2)
 
 
         widgets_3 = [            
             {"type": "text", "label_text": "Link to access"},
             {"type": "text", "label_text": "Citation requirements"}
         ]
-        section_3 = self.create_section("Section 3", widgets_3)
+        section_3 = self.create_section("Using the dataset", widgets_3)
 
 
         widgets_4 = [
-            {"type": "dropdown", "label_text": "Sector", "options": ['Agriculture', 'Residential', 'Commercial', 'Industrial', 'Transportation', 'Power'], "multi_select": True},
-            {"type": "dropdown", "label_text": "Uses", "options": ['Demand', 'Generation', 'Transmission', 'Infrastructure', 'Storage'], "multi_select": True},
-            {"type": "dropdown", "label_text": "Area of Focus", "options": ['Technical', 'Environment', 'Economic', 'Social'], "multi_select": True},
+            {"type": "dropdown", "label_text": "Sector", "options": ['Agriculture', 'Residential', 'Commercial', 'Industrial', 'Transportation', 'Power'], "multi_select": True, "Tags": True},
+            {"type": "dropdown", "label_text": "Uses", "options": ['Demand', 'Generation', 'Transmission', 'Infrastructure', 'Storage'], "multi_select": True, "Tags": True},
+            {"type": "dropdown", "label_text": "Subject", "options": ['Technical', 'Environment', 'Economic', 'Social'], "multi_select": True, "Tags": True},
         ]
         section_4 = self.create_section("TAGS", widgets_4)
 
         widgets_5 = [
-            {"type": "dropdown", "label_text": "Data Type", "options": ['Geospatial', 'Tabular', 'Timeseries'], "multi_select": True},
-            {"type": "dropdown", "label_text": "Resource Carrier", "options": ['Water', 'Gas', 'Wind', 'Oil', 'Biomass', 'Heating/Cooling', 'Hydro', 'Temperature', 'Land', 'Solar', 'Nuclear', 'Emissions', 'Waste', 'Hydrogen', 'Geothermal', 'Electricity'], "multi_select": True}
+            {"type": "dropdown", "label_text": "Dtype", "options": ['Geospatial', 'Tabular', 'Timeseries'], "multi_select": True, "Tags": True},
+            {"type": "dropdown", "label_text": "ReCar", "options": ['Water', 'Gas', 'Wind', 'Oil', 'Biomass', 'Heating/Cooling', 'Hydro', 'Temperature', 'Land', 'Solar', 'Nuclear', 'Emissions', 'Waste', 'Hydrogen', 'Geothermal', 'Electricity'], "multi_select": True, "Tags": True}
         ]
         section_5 = self.create_section("TAGS", widgets_5)
 
@@ -231,18 +234,19 @@ class FormUI:
                     "type": "text",
                     "name": widget["label_text"],
                     "label": tk.Label(self.window, text=widget["label_text"]),
-                    "widget": tk.Text(self.window, height=5)
+                    "widget": tk.Text(self.window, height=5,  width=40)
                 })
             elif widget["type"] == "dropdown":
                 if widget.get("multi_select"):
-                    listbox = tk.Listbox(self.window, selectmode=tk.MULTIPLE, exportselection=0)
+                    listbox = tk.Listbox(self.window, selectmode=tk.MULTIPLE, exportselection=0, height=len(widget["options"]))
                     for option in widget["options"]:
                         listbox.insert(tk.END, option)
                     section["widgets"].append({
                         "type": "dropdown_multi",
                         "name": widget["label_text"],
-                        "label": tk.Label(self.window, text=widget["label_text"]),
-                        "widget": listbox
+                        "label": tk.Label(self.window, text=widget["label_text"]+" (Multi-Select)"),
+                        "widget": listbox,
+                        "is_tag":widget["Tags"]
                     })
                 else:
                     option_var = tk.StringVar()
@@ -252,7 +256,8 @@ class FormUI:
                         "name": widget["label_text"],
                         "label": tk.Label(self.window, text=widget["label_text"]),
                         "widget": tk.OptionMenu(self.window, option_var, *widget["options"]),
-                        "options": option_var
+                        "options": option_var,
+                        "is_tag":widget["Tags"]
                     })
         return section
 
@@ -323,10 +328,13 @@ class FormUI:
             elif widget_type == "dropdown_multi":
                 selected_items = widget_dict['widget'].curselection() #get selected items
                 data = [widget_dict['widget'].get(i) for i in selected_items]
-            
-            print(data)
+                label_text = widget_dict["label"]["text"]
+                self.tags_data[label_text] = data
             label_text = widget_dict["label"]["text"]
-            self.form_data[label_text] = data
+            if widget_type == "dropdown_multi" and widget_dict["is_tag"]:
+                self.tags_data[label_text] = data
+            else:
+                self.form_data[label_text] = data
     
     def clear_form(self):
         for section in self.sections:
@@ -334,7 +342,6 @@ class FormUI:
                 widget_type = widget_dict["type"]
                 widget_name = widget_dict["name"]
                 widget = widget_dict["widget"]
-                print(widget_name, widget_type)
                 if widget_type == "entry":
                     widget.delete("0", tk.END)  # clear the widget's value
                 elif widget_type == "text":
@@ -348,13 +355,15 @@ class FormUI:
     def generate_page(self, docstring):
         # Create directory if it does not exist
         # TODO: change the working to current directory
-        current_dir = '' 
+        current_dir = ''
         dataset_name = self.form_data['Dataset name']
-        if not os.path.exists(f"src/delta_e/{dataset_name}"):
-            os.mkdir(f"src/delta_e/{dataset_name}")
-            open(f"src/delta_e/{dataset_name}/__init__.py", 'a').close()
-            open(f"src/delta_e/{dataset_name}/{dataset_name}.py", 'a').close()
+        if os.path.exists(f"src/delta_e/{dataset_name}"):
+            messagebox.showinfo("Errror", "Dataset already exists!! either check if data set is same or rename the dataset")
+            return False
 
+        os.mkdir(f"src/delta_e/{dataset_name}")
+        open(f"src/delta_e/{dataset_name}/__init__.py", 'a').close()
+        open(f"src/delta_e/{dataset_name}/{dataset_name}.py", 'a').close()
 
         # Create file in the directory
         file_path = f"src/delta_e/{dataset_name}/{dataset_name}.py"
@@ -372,136 +381,102 @@ class FormUI:
 
         # Change back to the original directory
         os.chdir(current_dir)
+
+        return True
     
-    def create_labels(self):
-        ## 
-        return
+    def get_tags(self):
+        #.replace("(Multi-Select)", "").strip()
+        # TODO: {data.pop('Dataset name', 'N/A')}
+        tag_str = ""
+        for key, values in self.tags_data.items():
+            # Extract the tag from the key by removing '(Multi-Select)', 'when adding Tags:', and trimming whitespace
+            tag = key.replace('(Multi-Select)', '').strip()
+            # Extract the values from the list and join them with commas
+            if values!=[]:
+                tag_str+='\n'
+                for value in values:
+                    # Add the tag and values to the tag_str
+                    tag_str += f', {tag}:{value}'
+                tag_str+='\n'
+        return tag_str
 
-    def create_page(self):
-        ## 
-        return
     def create_submit_file(self, data):
-        # Get input values from data dictionary
-        researcher_name = data['Researcher Name:']
-        project_name = data['Project name']
-        dataset_name = data['Dataset name']
-        version = data['Version']
-        private_or_public = data['Private or public']
-        region = data['Region:']
-        time_horizon_from = data['Time Horizon From']
-        time_horizon_to = data['Time Horizon To']
-        spatial_resolution = data['Spatial Resolution (km^2)']
-        temporal_resolution = ', '.join(data['Temporal Resolution'])
-        sector = ', '.join(data['Sector'])
-        link_to_access = data['Link to access']
-        citation_requirements = data['Citation requirements']
-        uses = ', '.join(data['Uses'])
-        area_of_focus = ', '.join(data['Area of Focus'])
-        data_type = ', '.join(data['Data Type'])
-        resource_carrier = ', '.join(data['Resource Carrier'])
-
         # Define docstring format
-        docstring = f'''"""
-    Researcher Name:
-    ----------------
-    {researcher_name}
+        tags = self.get_tags()
 
+        docstring = f'''"""module for {data['Dataset name']} dataset
 
-    Project name:
-    -------------
-    {project_name}
+Project name:
+-------------
+{data.pop('Project name', 'N/A')}
 
+Tags:
+-----
+{tags}
+Researcher Name:
+----------------
+{data.pop('Researcher Name:', 'N/A')}
 
-    Dataset name:
-    -------------
-    {dataset_name}
+Dataset name:
+-------------
+{data.pop('Dataset name', 'N/A')}
 
+Description
+-------------
+{data.pop('Description', 'N/A')}
+Version:
+---------
+{data.pop('Version', 'N/A')}
 
-    Version:
-    --------
-    {version}
+Private or public:
+-------------------
+{data.pop('Private or public', 'N/A')}
 
+Region:
+--------
+{data.pop('Region:', 'N/A')}
 
-    Private or public:
-    ------------------
-    {private_or_public}
+Time Horizon:
+-------------
+{data.pop('Time Horizon From', 'N/A')} : {data.pop('Time Horizon To', 'N/A')}
 
+Spatial Resolution:
+-------------------
+{data.pop('Spatial Resolution (km^2)', 'N/A')}
 
-    Region:
-    -------
-    {region}
+Link to access:
+---------------
+{data.pop('Link to access', 'N/A')}
 
+Citation requirements:
+-----------------------
+{data.pop('Citation requirements', 'N/A')}
+'''
+        # Add any remaining information to the docstring
+        for key, value in data.items():
+            docstring+="\n\n"
+            docstring += f"{key}:\n{'-' * len(key)}\n{value}\n"
+        
+        docstring+=f'\n\n"""'
 
-    Time Horizon:
-    -------------
-    {time_horizon_from} : {time_horizon_to}
-
-
-    Spatial Resolution:
-    -------------------
-    {spatial_resolution}
-
-
-    Temporal Resolution:
-    --------------------
-    {temporal_resolution}
-
-
-    Sector:
-    -------
-    {sector}
-
-
-    Link to access:
-    ---------------
-    {link_to_access}
-
-
-    Citation requirements:
-    -----------------------
-    {citation_requirements}
-
-
-    Uses:
-    -----
-    {uses}
-
-
-    Area of Focus:
-    --------------
-    {area_of_focus}
-
-
-    Data Type:
-    ----------
-    {data_type}
-
-
-    Resource Carrier:
-    ------------------
-    {resource_carrier}"""
-    '''
+        # Return docstring
         return docstring
 
-    
     def submit_form(self):
         # process the form data and submit it to the backend or perform any other action
         # you can access the form data stored in the self.form_data dictionary
         # for example, to print the form data to the console, you can do the following:
         self.save_data(len(self.sections) - 1)
         print(self.form_data)
+        copy.deepcopy(self.form_data)
+        docstring = self.create_submit_file(copy.deepcopy(self.form_data))
 
-        docstring = self.create_submit_file(self.form_data)
-        self.generate_page(docstring)
+        if self.generate_page(docstring):
+            messagebox.showinfo("Success", "Form submitted successfully!")
+            self.clear_form()
+            self.hide_section(self.current_section)
+            self.show_section(0)
 
-    
-        messagebox.showinfo("Success", "Form submitted successfully!")
-
-        self.clear_form()
-        self.hide_section(self.current_section)
-        self.show_section(0)
-
-        self.create_page()
 
 if __name__ == "__main__":
     FormUI()
