@@ -5,12 +5,12 @@ After deciding that a dataset is useful for your research and/or could be useful
 To do this, first you need to create a new branch in delta-e-utils. Then clone the repository on to your machine. Check the README.md on the front page of delta-e-utils on how to do this. Next, you need to install Tkinter and PIL by writing the following into your command line:
 
 Tkinter:
-```pip
+```bash
 pip install tk
 ```
 
 PIL:
-```pip
+```bash
 pip install pillow
 ```
 or
@@ -28,15 +28,15 @@ Use Page 2 of this how to guide to help with filling the form. After submiting t
 
 Once all of this is complete commit and push these changes to your branch by writing:
 
-```git
+```bash
 git add .
 ```
 
-```git
+```bash
 git commit -m "message"
 ```
 
-```git
+```bash
 git push
 ```
 
