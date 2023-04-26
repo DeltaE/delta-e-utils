@@ -1,143 +1,99 @@
-"""import os
-import tkinter as tk
-from PIL import Image, ImageTk
-import subprocess
-
-def create_submit_file():
-    # Get input values from text boxes
-    project_name = project_name_box.get()
-    description = description_box.get('1.0', 'end-1c')
-    tags = tags_box.get().split(', ')
-    purpose = purpose_box.get('1.0', 'end-1c')
-
-    # Define docstring format
-    docstring = f'''"""
 '''
-{project_name}
-{'=' * len(project_name)}
+NOTE: remove line 65:69 to run this file  
 
-{description}
+The code provided is a Python script that creates a graphical user interface (GUI) for a form using the tkinter module. It also converts a YAML file into form sections and widgets, and allows for navigation between these sections. Here is a detailed breakdown of each part of the code:
 
+Imported modules:
+- `os`: provides a way to interact with the operating system, e.g., reading and writing files.
+- `subprocess`: allows running a command as a subprocess of the current Python process.
+- `copy`: provides a way to copy objects, including deep copies of nested objects.
+- `yaml`: allows reading and writing YAML files.
 
-Tags
-----
-{', '.join(tags)}
+In addition to these modules, it also imports several classes and functions from the tkinter and Pillow modules:
+- `tkinter.Tk`: the main window of the GUI.
+- `tkinter.messagebox`: provides a way to display message boxes.
+- `tkinter.font`: allows setting a custom font for labels.
+- `PIL.Image`: provides a way to read and manipulate image files.
+- `PIL.ImageTk`: allows displaying PIL images in a tkinter window.
 
+The following functions and classes are defined in the script:
 
-Purpose of Dataset
-------------------
-{purpose}'''
-"""'''
+Function `create_section(title, widgets)`:
+- Takes two arguments: `title` (a string) and `widgets` (a list of dictionaries).
+- Returns a dictionary with two keys: "title" (the value of the `title` argument) and "widgets" (the value of the `widgets` argument).
 
-    # Create directory if it does not exist
-    if not os.path.exists(project_name):
-        os.mkdir(project_name)
-        open(f"src/delta_e/{project_name}/__init__.py", 'a').close()
+Function `convert_yaml_to_sections(yaml_file)`:
+- Takes one argument: `yaml_file` (a string representing the path to a YAML file).
+- Opens the specified YAML file and converts it into a Python object using the `yaml.load()` function.
+- Creates a list of sections (each section is a dictionary with "title" and "widgets" keys) by iterating through the items in the Python object.
+- Returns the list of sections.
 
-    # Create file in the directory
-    file_path = f"{project_name}/{project_name}.py"
-    with open(file_path, 'w') as f:
-        f.write(docstring)
-
-    # Clear the form
-    project_name_box.delete(0, 'end')
-    description_box.delete('1.0', 'end')
-    tags_box.delete(0, 'end')
-    purpose_box.delete('1.0', 'end')
-
-    # Save the current directory
-    current_dir = os.getcwd()
-
-    # Change to the directory where the Makefile is located
-    makefile_dir = 'docs'
-    os.chdir(makefile_dir)
-
-    # Run the "make html" command
-    subprocess.run(['make', 'html'])
-
-    # Change back to the original directory
-    os.chdir(current_dir)
-
-
-# Create Tkinter window
-window = tk.Tk()
-window.title('Create Python File')
-window.geometry('400x400')
-
-# Add an image
-img = Image.open('docs/_static/Logo2.png')
-width, height = img.size
-aspect_ratio = width/height
-new_height = 50
-new_width = int(new_height*aspect_ratio)
-img = img.resize((new_width, new_height), Image.ANTIALIAS)
-img = ImageTk.PhotoImage(img)
-panel = tk.Label(window, image=img)
-panel.pack(side='top', fill='both', expand='yes')
-
-# Project name input
-project_name_label = tk.Label(window, text='Project Name', font=('Arial', 18))
-project_name_label.pack()
-project_name_box = tk.Entry(window)
-project_name_box.pack()
-
-# Description input
-description_label = tk.Label(window, text='Description', font=('Arial', 18))
-description_label.pack()
-description_box = tk.Text(window, height=5)
-description_box.pack()
-
-# Tags input
-tags_label = tk.Label(window, text='Tags (comma separated)', font=('Arial', 18))
-tags_label.pack()
-tags_box = tk.Entry(window)
-tags_box.pack()
-
-# Purpose input
-purpose_label = tk.Label(window, text='Purpose of Dataset', font=('Arial', 18))
-purpose_label.pack()
-purpose_box = tk.Text(window, height=5)
-purpose_box.pack()
-
-# Submit button
-submit_button = tk.Button(window, text='Create File', command=create_submit_file, font=('Arial', 18))
-submit_button.pack()
-
-# Run window
-window.mainloop()
-"""
-
-"""
-Section 1:
-Researcher name : Short written answer
-Project name : Drop down menu (Checklist)
-Dataset name : Short written answer
-Description : Long written answer
-Version : Short written answer
-Private or public : Drop down menu (Checklist)
-
-
-
-Section 2:
-Region : Drop down menu (Checklist)
-Time horizon : Drop down menu (Checklist)
-Spatial resolution : Drop down menu (Checklist)
-Temporal resolution : Drop down menu (Checklist)
-Units : Long written answer
-
-
-Section 3:
-Link to access : Long written answer
-Citation requirements : Long written answer
-"""
+Class `FormUI`:
+- Initializes the main window of the GUI (`self.window`) with a title ("Form UI").
+- Defines several instance variables:
+  - `self.current_section` (an integer representing the index of the currently displayed section).
+  - `self.sections` (a list of dictionaries, each representing a form section).
+  - `self.form_data` (a dictionary containing the user's input data for each widget).
+  - `self.tags_data` (a dictionary containing the user's input data for each "tag" widget, which allows for selecting multiple options).
+- Loads an image file and displays it in the window.
+- Converts a YAML file into a list of sections using the `convert_yaml_to_sections()` function and creates a corresponding list of section dictionaries using the `create_section()` function.
+- Defines two navigation buttons ("Prev" and "Next") and displays them in the window.
+- Calls the `show_section()` method to display the first section.
+- Defines several methods:
+  - `create_section(label_text, widgets)`: similar to the `create_section()` function above, but creates a dictionary with "label" (a tkinter Label object) and "widgets" (a list of widget dictionaries) keys.
+  - `show_section(section_index)`: displays the section at the specified index by packing the section label and each widget label and widget.
+  - `hide_section(section_index)`: hides the section at the specified index by forgetting the section label and each widget label and widget.
+  - `show_next_section()`: called when the "Next" button is clicked; saves the user's input data for the current section, hides the current section, displays the next section, and updates the navigation buttons.
+  - `show_prev_section()` - Hides current section, saves data, and shows previous section in a multi-section form.
+  - `update_navigation_buttons()` - Updates the state of the navigation buttons based on the current section in a multi-section form.
+  - `save_data(section_index)` - Saves the user input data from the current section of a multi-section form.
+  - `clear_form()` - Clears the user input data in a multi-section form.
+  - `generate_page(docstring)` - Generates a page in HTML format by creating a directory, a file, and running the Makefile command.
+  - `get_tags()` - Extracts the tag from the label of a multi-select dropdown widget and returns a formatted string.
+  - `create_submit_file(data)` - Creates a submit file by formatting the data dictionary and returning a string representation.
+'''
 import os
 import subprocess
 import copy
+import yaml
+import sys
 
 import tkinter as tk
 from tkinter import messagebox, font
 from PIL import Image, ImageTk
 
+# Get the path of the executable file
+exe_dir = os.path.dirname(sys.executable)
+
+# Change the working directory to the directory containing the executable file
+os.chdir(exe_dir)
+
+def create_section(title, widgets):
+    section = {}
+    section["title"] = title
+    section["widgets"] = widgets
+    return section
+
+def convert_yaml_to_sections(yaml_file):
+    with open(yaml_file, "r") as f:
+        data = yaml.load(f, Loader=yaml.FullLoader)
+    sections = []
+    for section in data:
+        title = section["section"]["title"]
+        widgets = []
+        for widget in section["section"]["widgets"]:
+            w = {}
+            w["type"] = widget["type"]
+            w["label_text"] = widget["label_text"]
+            if "options" in widget:
+                w["options"] = widget["options"]
+            if "multi_select" in widget:
+                w["multi_select"] = widget["multi_select"]
+            if "Tags" in widget:
+                w["Tags"] = widget["Tags"]
+            widgets.append(w)
+        sections.append(create_section(title, widgets))
+    return sections
 
 class FormUI:
     def __init__(self):
@@ -160,50 +116,10 @@ class FormUI:
         panel.pack(side='top', fill='both', expand='yes')
 
         # create sections
-        widgets_1 = [
-            {"type": "entry", "label_text": "Researcher Name:"},
-            {"type": "dropdown", "label_text": "Project name", "options": ['Atlantic Canada', 'BC Nexus', 'BC PyPSA', 'Canada-USA', 'CLEWs Canada', 'CLEWs Global', 'CLEWs Kenya', 'Energy Storage Modelling', 'Fleet Electrification', 'LCA', 'Laos Cascading Hydro', 'OSeMOSYS Global', 'Vancouver Island PyPSA'], "multi_select": False, "Tags": False},
-            {"type": "entry", "label_text": "Dataset name"},
-            {"type": "text", "label_text": "Description"},
-            {"type": "entry", "label_text": "Version"},
-            {"type": "dropdown", "label_text": "Private or public", "options": ["Private", "Public"], "multi_select": False, "Tags": False}
-        ]
-        section_1 = self.create_section("General Information", widgets_1)
-
-        widgets_2 = [
-            {"type": "dropdown", "label_text": "Region:", "options": ["World", "Continent", "Country"], "multi_select": False, "Tags": False},
-            {"type": "dropdown", "label_text": "Time Horizon From", "options": list(range(1990, 2101)), "multi_select": False, "Tags": False},
-            {"type": "dropdown", "label_text": "Time Horizon To", "options": list(range(1990, 2101)), "multi_select": False, "Tags": False},
-
-            {"type": "dropdown", "label_text": "Spatial Resolution (km^2)", "options": ['N/A','1-10', '10-100', '100-1000', '>1000'], "multi_select": False, "Tags": False},
-            {"type": "dropdown", "label_text": "Temporal", "options": ['Years', 'Months', 'Days', 'Hours', 'Minutes', 'Seconds'], "multi_select": True, "Tags": True},
-            {"type": "dropdown", "label_text": "Sector", "options": ['Agriculture', 'Residential', 'Commercial', 'Industrial', 'Transportation', 'Power'], "multi_select": True, "Tags": True}
-        ]
-        section_2 = self.create_section("Spatial and Temporal Information", widgets_2)
-
-
-        widgets_3 = [            
-            {"type": "text", "label_text": "Link to access"},
-            {"type": "text", "label_text": "Citation requirements"}
-        ]
-        section_3 = self.create_section("Using the dataset", widgets_3)
-
-
-        widgets_4 = [
-            {"type": "dropdown", "label_text": "Sector", "options": ['Agriculture', 'Residential', 'Commercial', 'Industrial', 'Transportation', 'Power'], "multi_select": True, "Tags": True},
-            {"type": "dropdown", "label_text": "Uses", "options": ['Demand', 'Generation', 'Transmission', 'Infrastructure', 'Storage'], "multi_select": True, "Tags": True},
-            {"type": "dropdown", "label_text": "Subject", "options": ['Technical', 'Environment', 'Economic', 'Social'], "multi_select": True, "Tags": True},
-        ]
-        section_4 = self.create_section("TAGS", widgets_4)
-
-        widgets_5 = [
-            {"type": "dropdown", "label_text": "Dtype", "options": ['Geospatial', 'Tabular', 'Timeseries'], "multi_select": True, "Tags": True},
-            {"type": "dropdown", "label_text": "ReCar", "options": ['Water', 'Gas', 'Wind', 'Oil', 'Biomass', 'Heating/Cooling', 'Hydro', 'Temperature', 'Land', 'Solar', 'Nuclear', 'Emissions', 'Waste', 'Hydrogen', 'Geothermal', 'Electricity'], "multi_select": True, "Tags": True}
-        ]
-        section_5 = self.create_section("TAGS", widgets_5)
-
-
-        self.sections = [section_1, section_2, section_3, section_4, section_5]
+        self.sections_list = convert_yaml_to_sections("input.yaml")
+        self.sections = []
+        for section in self.sections_list:
+            self.sections.append(self.create_section(section['title'], section['widgets']))
 
         # create navigation buttons
         self.prev_button = tk.Button(self.window, text="Prev", state=tk.DISABLED, command=self.show_prev_section)
@@ -262,7 +178,7 @@ class FormUI:
         return section
 
     def show_section(self, section_index):
-        
+
         section = self.sections[section_index]
         custom_font = font.Font(family='Helvetica', size=20, weight='bold')  # set a custom font
         section_label = section["label"]
@@ -393,10 +309,9 @@ class FormUI:
             tag = key.replace('(Multi-Select)', '').strip()
             # Extract the values from the list and join them with commas
             if values!=[]:
-                tag_str+='\n'
                 for value in values:
                     # Add the tag and values to the tag_str
-                    tag_str += f', {tag}:{value}'
+                    tag_str += f'{tag}:{value}, '
                 tag_str+='\n'
         return tag_str
 
@@ -415,7 +330,7 @@ Tags:
 {tags}
 Researcher Name:
 ----------------
-{data.pop('Researcher Name:', 'N/A')}
+{data.pop('Researcher Name', 'N/A')}
 
 Dataset name:
 -------------
@@ -434,7 +349,7 @@ Private or public:
 
 Region:
 --------
-{data.pop('Region:', 'N/A')}
+{data.pop('Region', 'N/A')}
 
 Time Horizon:
 -------------
@@ -447,17 +362,19 @@ Spatial Resolution:
 Link to access:
 ---------------
 {data.pop('Link to access', 'N/A')}
-
 Citation requirements:
------------------------
+----------------------
 {data.pop('Citation requirements', 'N/A')}
+Licensing requirements:
+-----------------------
+{data.pop('Licensing requirements', 'N/A')}
 '''
         # Add any remaining information to the docstring
         for key, value in data.items():
-            docstring+="\n\n"
-            docstring += f"{key}:\n{'-' * len(key)}\n{value}\n"
+            docstring+="\n"
+            docstring += f"{key}:\n{'-' * (len(key)+1)}\n{value}\n"
         
-        docstring+=f'\n\n"""'
+        docstring+=f'"""'
 
         # Return docstring
         return docstring
