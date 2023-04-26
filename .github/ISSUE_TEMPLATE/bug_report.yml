@@ -43,13 +43,17 @@ body:
   validations:
     required: false
 
-- type: input
-  attributes:
-    label: Operating System 
-    description: Provide operating system and version 
-    placeholder: ex. Ubuntu 20.04, Windows 11, macOS 10.14
-  validations:
-    required: false
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      description: What operating system are you running?
+      options:
+        - Linux
+        - MacOS
+        - Windows
+    validations:
+      required: true
 
 - type: textarea
   attributes:
