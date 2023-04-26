@@ -1,0 +1,48 @@
+---
+name: Documentation
+about: Issues relating to documentation
+title: ''
+labels: ''
+assignees: ''
+
+---
+
+- type: dropdown
+  attributes:
+    label: Type of documentation issue. 
+    options:
+      - Missing 
+      - Incorect
+  validations:
+    required: true
+
+- type: input
+  attributes:
+    label: Link to existing documentation 
+    description: If applicable, provide the link to the current documentation location
+  validations:
+    required: false
+
+- type: textarea
+  attributes:
+    label: Issue Description 
+    description: Detailed description of the documentation issue. 
+    placeholder: |
+      ie. There is no description of how to change model horizon of a model run. 
+  validations:
+    required: true
+
+- type: input
+  attributes:
+    label: Suggested Update
+    description: Do you have an idea on how to add or update the documention? 
+  validations:
+    required: false
+
+- type: textarea
+  attributes:
+    label: Additional Info
+    description: |
+      Please provide any additional information to help fix this documentation issue.  
+  validations:
+    required: false
