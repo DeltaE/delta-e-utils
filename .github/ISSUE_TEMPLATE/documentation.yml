@@ -1,11 +1,8 @@
----
-name: Documentation
-about: Issues relating to documentation
-title: ''
-labels: ''
-assignees: ''
-
----
+name: Documentation 
+description: Issues relating to documentation
+title: "[DOCS] <Short description of documentation issue>"
+labels: ["documentation"]
+body:
 
 - type: dropdown
   attributes:
