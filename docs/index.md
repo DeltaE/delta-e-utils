@@ -26,6 +26,12 @@ you include documentation from docstrings. Docstrings can be written in
 :maxdepth: 2
 
 Overview <readme>
+About <About>
+Adding Datasets <AddingDatasets>
+Form Question Descriptions <FormDescriptions>
+Flowchart <Flowchart>
+Searching For Datasets <SearchingDatasets>
+Updating Datasets <UpdatingDatasets>
 Contributions & Help <contributing>
 License <license>
 Authors <authors>

@@ -1,6 +1,65 @@
-"""Gets epa emissions data
+"""module for EPAEmissions dataset
 
-NOTE: This source uses 100 year potential. 
+Project name:
+-------------
+OSeMOSYS Global
+
+Tags:
+-----
+
+Temporal:Years
+
+Sector:Power
+
+Uses:Generation
+
+Subject:Technical, Subject:Environment
+
+Dtype:Tabular
+
+ReCar:Emissions
+
+Researcher Name:
+----------------
+Trevor
+
+Dataset name:
+-------------
+EPAEmissions
+
+Description
+-------------
+100 year CO2, N20, and CH4 potential for varrious fuels 
+
+Version:
+---------
+2018
+
+Private or public:
+-------------------
+Public
+
+Region:
+--------
+World
+
+Time Horizon:
+-------------
+2018 : 2018
+
+Spatial Resolution:
+-------------------
+N/A
+
+Link to access:
+---------------
+https://www.epa.gov/climateleadership/ghg-emission-factors-hub
+
+
+Citation requirements:
+-----------------------
+Environmental Protection Agency 
+
 """
 
 import pandas as pd
