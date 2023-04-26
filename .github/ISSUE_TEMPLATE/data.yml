@@ -1,11 +1,8 @@
----
-name: Data
-about: Issues relating to missing or incorrect data
-title: ''
-labels: ''
-assignees: ''
-
----
+name: Data 
+description: Issues relating to missing or incorrect data
+title: "[DATA] <Short description>"
+labels: ["data"]
+body:
 
 - type: input
   attributes:
