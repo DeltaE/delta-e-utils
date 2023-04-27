@@ -1,5 +1,5 @@
 '''
-NOTE: remove line 65:69 to run this file  
+NOTE: remove line 66:70 to run this file  
 
 The code provided is a Python script that creates a graphical user interface (GUI) for a form using the tkinter module. It also converts a YAML file into form sections and widgets, and allows for navigation between these sections. Here is a detailed breakdown of each part of the code:
 
@@ -57,6 +57,7 @@ import subprocess
 import copy
 import yaml
 import sys
+import re
 
 import tkinter as tk
 from tkinter import messagebox, font
@@ -379,17 +380,36 @@ Licensing requirements:
         # Return docstring
         return docstring
 
+    def validate_dataset_name(self):
+        dataset_name = self.form_data['Dataset name']
+        
+        # Check if dataset name is empty
+        if not dataset_name:
+            messagebox.showinfo("", "Dataset name cannot be empty.")
+            return False
+        
+        # Check for spaces/numbers/special characters and replace with underscore
+        dataset_name = re.sub(r"[^a-zA-Z_]", "_", dataset_name)
+
+        # Remove underscores at the beginning of the string until a character is encountered
+        self.form_data['Dataset name'] = re.sub(r"^_+", "", dataset_name)
+    
+        return True
+    
     def submit_form(self):
         # process the form data and submit it to the backend or perform any other action
         # you can access the form data stored in the self.form_data dictionary
-        # for example, to print the form data to the console, you can do the following:
+
         self.save_data(len(self.sections) - 1)
-        print(self.form_data)
+
+        if not self.validate_dataset_name():
+            return
+        
         copy.deepcopy(self.form_data)
         docstring = self.create_submit_file(copy.deepcopy(self.form_data))
 
         if self.generate_page(docstring):
-            messagebox.showinfo("Success", "Form submitted successfully!")
+            messagebox.showinfo("Success", "Form submitted successfully! new file created at:" + f"src/delta_e/{self.form_data['Dataset name']}/{self.form_data['Dataset name']}.py")
             self.clear_form()
             self.hide_section(self.current_section)
             self.show_section(0)
