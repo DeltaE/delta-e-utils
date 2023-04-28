@@ -298,17 +298,6 @@
           - Seconds
         multi_select: true
         Tags: true
-      - type: dropdown
-        label_text: Sector
-        options:
-          - Agriculture
-          - Residential
-          - Commercial
-          - Industrial
-          - Transportation
-          - Power
-        multi_select: true
-        Tags: true
 - section:
     title: Using the dataset
     widgets:
@@ -325,11 +314,11 @@
         label_text: Sector
         options:
           - Agriculture
-          - Residential
           - Commercial
           - Industrial
-          - Transportation
           - Power
+          - Residential
+          - Transportation
         multi_select: true
         Tags: true
       - type: dropdown
@@ -337,18 +326,18 @@
         options:
           - Demand
           - Generation
-          - Transmission
           - Infrastructure
           - Storage
+          - Transmission
         multi_select: true
         Tags: true
       - type: dropdown
         label_text: Subject
         options:
+          - Economic 
+          - Environment 
+          - Social 
           - Technical
-          - Environment
-          - Economic
-          - Social
         multi_select: true
         Tags: true
 - section:
@@ -365,21 +354,21 @@
       - type: dropdown
         label_text: ReCar
         options:
-          - Water
-          - Gas
+          - Biomass 
+          - Electricity 
+          - Emissions 
+          - Gas 
+          - Geothermal 
+          - Heating/Cooling 
+          - Hydro 
+          - Hydrogen 
+          - Land 
+          - Nuclear 
+          - Oil 
+          - Solar 
+          - Temperature 
+          - Waste 
+          - Water 
           - Wind
-          - Oil
-          - Biomass
-          - Heating/Cooling
-          - Hydro
-          - Temperature
-          - Land
-          - Solar
-          - Nuclear
-          - Emissions
-          - Waste
-          - Hydrogen
-          - Geothermal
-          - Electricity
         multi_select: true
         Tags: true
