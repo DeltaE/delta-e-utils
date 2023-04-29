@@ -61,12 +61,12 @@ import re
 
 import tkinter as tk
 from tkinter import messagebox, font
-from PIL import Image, ImageTk
+# from PIL import Image, ImageTk
 
 # Get the path of the executable file
 exe_dir = os.path.dirname(sys.executable)
 
-# Change the working directory to the directory containing the executable file
+# # Change the working directory to the directory containing the executable file
 os.chdir(exe_dir)
 
 def create_section(title, widgets):
@@ -105,18 +105,18 @@ class FormUI:
         self.form_data = {}
         self.tags_data = {}
 
-        # Add an image
-        img = Image.open('docs/_static/Logo2.png')
-        width, height = img.size
-        aspect_ratio = width/height
-        new_height = 50
-        new_width = int(new_height*aspect_ratio)
-        img = img.resize((new_width, new_height), Image.ANTIALIAS)
-        img = ImageTk.PhotoImage(img)
-        panel = tk.Label(self.window, image=img)
-        panel.pack(side='top', fill='both', expand='yes')
+        # # # Add an image
+        # # img = Image.open('docs/_static/Logo2.png')
+        # # width, height = img.size
+        # # aspect_ratio = width/height
+        # # new_height = 50
+        # # new_width = int(new_height*aspect_ratio)
+        # # img = img.resize((new_width, new_height), Image.ANTIALIAS)
+        # # img = ImageTk.PhotoImage(img)
+        # # panel = tk.Label(self.window, image=img)
+        # # panel.pack(side='top', fill='both', expand='yes')
 
-        # create sections
+        # # create sections
         self.sections_list = convert_yaml_to_sections("input.yaml")
         self.sections = []
         for section in self.sections_list:
