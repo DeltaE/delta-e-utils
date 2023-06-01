@@ -75,7 +75,6 @@ extensions = [
     # manually added below extensions
     "myst_parser",
     "sphinx.ext.duration",
-    "renku"
     #"sphinx.ext.autosectionlabel",
     #"recommonmark"
 ]
