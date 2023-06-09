@@ -297,7 +297,7 @@ class FormUI:
 
         # Change to the directory where the Makefile is located
         makefile_dir = 'docs'
-        os.chdir(current_dir + makefile_dir)
+        os.chdir(folder_path + makefile_dir)
 
         # Run the "make html" command
         #subprocess.run(['make', 'html'])
@@ -415,7 +415,7 @@ Licensing requirements:
         docstring = self.create_submit_file(copy.deepcopy(self.form_data))
 
         if self.generate_page(docstring):
-            messagebox.showinfo("Success", "Form submitted successfully! new file created at:" + folder_path + f"/src/delta_e/{self.form_data['Dataset name']}/{self.form_data['Dataset name']}.py")
+            messagebox.showinfo("Success", "Form submitted successfully! new file created at:" + folder_path + f"src/delta_e/{self.form_data['Dataset name']}/{self.form_data['Dataset name']}.py")
             self.clear_form()
             self.hide_section(self.current_section)
             self.show_section(0)
