@@ -51,6 +51,9 @@ Class `FormUI`:
   - `generate_page(docstring)` - Generates a page in HTML format by creating a directory, a file, and running the Makefile command.
   - `get_tags()` - Extracts the tag from the label of a multi-select dropdown widget and returns a formatted string.
   - `create_submit_file(data)` - Creates a submit file by formatting the data dictionary and returning a string representation.
+  
+  Important notes: 
+  When running locally uncomment the lines having 'folder_path' in it, and comment the line just after that.  
 '''
 import os
 import subprocess
@@ -62,6 +65,9 @@ import re
 import tkinter as tk
 from tkinter import messagebox, font
 from PIL import Image, ImageTk
+
+# Get current folder path
+folder_path = os.getcwd() + "\\"
 
 # Get the path of the executable file
 exe_dir = os.path.dirname(sys.executable)
@@ -106,7 +112,7 @@ class FormUI:
         self.tags_data = {}
 
         # Add an image
-        img = Image.open('docs/_static/Logo2.png')
+        img = Image.open(folder_path + 'docs/_static/Logo2.png')
         width, height = img.size
         aspect_ratio = width/height
         new_height = 50
@@ -117,7 +123,7 @@ class FormUI:
         panel.pack(side='top', fill='both', expand='yes')
 
         # create sections
-        self.sections_list = convert_yaml_to_sections("input.yaml")
+        self.sections_list = convert_yaml_to_sections(folder_path + "input.yaml")
         self.sections = []
         for section in self.sections_list:
             self.sections.append(self.create_section(section['title'], section['widgets']))
@@ -274,16 +280,16 @@ class FormUI:
         # TODO: change the working to current directory
         current_dir = ''
         dataset_name = self.form_data['Dataset name']
-        if os.path.exists(f"src/delta_e/{dataset_name}"):
+        if os.path.exists(folder_path + f"src\\delta_e\\{dataset_name}"):
             messagebox.showinfo("Errror", "Dataset already exists!! either check if data set is same or rename the dataset")
             return False
 
-        os.mkdir(f"src/delta_e/{dataset_name}")
-        open(f"src/delta_e/{dataset_name}/__init__.py", 'a').close()
-        open(f"src/delta_e/{dataset_name}/{dataset_name}.py", 'a').close()
+        os.mkdir(folder_path + f"src/delta_e/{dataset_name}")
+        open(folder_path + f"src/delta_e/{dataset_name}/__init__.py", 'a').close()
+        open(folder_path + f"src/delta_e/{dataset_name}/{dataset_name}.py", 'a').close()
 
         # Create file in the directory
-        file_path = f"src/delta_e/{dataset_name}/{dataset_name}.py"
+        file_path = folder_path + f"src/delta_e/{dataset_name}/{dataset_name}.py"
         with open(file_path, 'w') as f:
             f.write(docstring)
 
@@ -291,10 +297,10 @@ class FormUI:
 
         # Change to the directory where the Makefile is located
         makefile_dir = 'docs'
-        os.chdir(makefile_dir)
+        os.chdir(current_dir + makefile_dir)
 
         # Run the "make html" command
-        subprocess.run(['make', 'html'])
+        #subprocess.run(['make', 'html'])
 
         # Change back to the original directory
         os.chdir(current_dir)
@@ -409,7 +415,7 @@ Licensing requirements:
         docstring = self.create_submit_file(copy.deepcopy(self.form_data))
 
         if self.generate_page(docstring):
-            messagebox.showinfo("Success", "Form submitted successfully! new file created at:" + f"src/delta_e/{self.form_data['Dataset name']}/{self.form_data['Dataset name']}.py")
+            messagebox.showinfo("Success", "Form submitted successfully! new file created at:" + folder_path + f"/src/delta_e/{self.form_data['Dataset name']}/{self.form_data['Dataset name']}.py")
             self.clear_form()
             self.hide_section(self.current_section)
             self.show_section(0)
