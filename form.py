@@ -194,6 +194,9 @@ class FormUI:
         for widget_dict in section["widgets"]:
             widget_dict["label"].pack()
             widget_dict["widget"].pack()
+            if widget_dict["name"] == "Citation requirements":
+                # Insert The Default value.
+                widget_dict["widget"].insert(tk.END, "Placeholder")    
         self.current_section = section_index
         self.update_navigation_buttons()
 
