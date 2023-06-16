@@ -126,7 +126,7 @@ class FormUI:
         panel.pack(side='top', fill='both', expand='yes')
 
         # create sections
-        self.yaml_file_path = folder_path + "input.yaml"
+        self.yaml_file_path = folder_path + "input1.yaml" # testing yaml file
         self.sections_list, self.yaml_raw_data = convert_yaml_to_sections(self.yaml_file_path)
         self.sections = []
         for section in self.sections_list:
@@ -422,7 +422,7 @@ class FormUI:
             return
         
         #copy.deepcopy(self.form_data)
-        #self.update_yaml()
+        self.update_yaml()
         docstring = self.create_submit_file(copy.deepcopy(self.form_data))
 
         if self.generate_page(docstring):
@@ -431,24 +431,16 @@ class FormUI:
             self.hide_section(self.current_section)
             self.show_section(0)
         
-    # def update_yaml(self)->None:
-    #         print(self.sections[0]["widgets"][1]['orig_data'])
-    #         print(self.form_data['Project name'])
-    #         if self.form_data['Project name'] not in self.sections[0]["widgets"][1]['orig_data']:
-    #             print("not")  
-    #             new_var = self.yaml_raw_data[0]['section']['widgets'][1]['options']
-    #             print(type(new_var))
-    #             print([self.form_data['Project name']] + self.sections[0]["widgets"][1]['orig_data'])
-    #             new_var = [self.form_data['Project name']] + self.sections[0]["widgets"][1]['orig_data']
-    #             print(new_var)
-    #             print(type(self.yaml_raw_data[0]['section']['widgets'][1]))
-    #             self.yaml_raw_data[0]['section']['widgets'][1].update({'options' : new_var})
-    #             print(self.yaml_raw_data)
-    #             self.yaml_file_path
-    #             with open(self.yaml_file_path, mode="wt", encoding="utf-8") as file:
-    #                 yaml.dump(self.yaml_raw_data, file)
-    #         else:
-    #             print("in")   
+    def update_yaml(self)->None:
+            if self.form_data['Project name'] not in self.sections[0]["widgets"][1]['orig_data']:
+                # Create the updated list
+                new_options = [self.form_data['Project name']] + self.sections[0]["widgets"][1]['orig_data']
+                # Update the parent dictionary
+                self.yaml_raw_data[0]['section']['widgets'][1].update({'options' : new_options})
+                # Update the yaml file
+                with open(self.yaml_file_path, mode="wt", encoding="utf-8") as file:
+                    yaml.dump(self.yaml_raw_data, file)
+              
 
 
 if __name__ == "__main__":
