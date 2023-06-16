@@ -63,7 +63,7 @@ import sys
 import re
 
 import tkinter as tk
-from tkinter import messagebox, font
+from tkinter import messagebox, font, ttk
 from PIL import Image, ImageTk
 
 # Get current folder path
@@ -84,6 +84,7 @@ def create_section(title, widgets):
 def convert_yaml_to_sections(yaml_file):
     with open(yaml_file, "r") as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
+    yaml_raw_data = data
     sections = []
     for section in data:
         title = section["section"]["title"]
@@ -98,9 +99,11 @@ def convert_yaml_to_sections(yaml_file):
                 w["multi_select"] = widget["multi_select"]
             if "Tags" in widget:
                 w["Tags"] = widget["Tags"]
+            if "editable" in widget:
+                w["editable"] = widget["editable"]
             widgets.append(w)
         sections.append(create_section(title, widgets))
-    return sections
+    return sections, yaml_raw_data
 
 class FormUI:
     def __init__(self):
@@ -110,20 +113,21 @@ class FormUI:
         self.sections = []
         self.form_data = {}
         self.tags_data = {}
-
+        self.yaml_raw_data = []
         # Add an image
         img = Image.open(folder_path + 'docs/_static/Logo2.png')
         width, height = img.size
         aspect_ratio = width/height
         new_height = 50
         new_width = int(new_height*aspect_ratio)
-        img = img.resize((new_width, new_height), Image.ANTIALIAS)
+        img = img.resize((new_width, new_height), Image.LANCZOS)
         img = ImageTk.PhotoImage(img)
         panel = tk.Label(self.window, image=img)
         panel.pack(side='top', fill='both', expand='yes')
 
         # create sections
-        self.sections_list = convert_yaml_to_sections(folder_path + "input.yaml")
+        self.yaml_file_path = folder_path + "input.yaml"
+        self.sections_list, self.yaml_raw_data = convert_yaml_to_sections(self.yaml_file_path)
         self.sections = []
         for section in self.sections_list:
             self.sections.append(self.create_section(section['title'], section['widgets']))
@@ -174,13 +178,16 @@ class FormUI:
                 else:
                     option_var = tk.StringVar()
                     option_var.set(widget["options"][0])
+                    widget_type = ttk.Combobox(self.window, values=list(widget["options"]), textvariable=option_var)
+                    widget_type['state'] = 'normal' if widget.get("editable")  else 'readonly'
                     section["widgets"].append({
                         "type": "dropdown_single",
                         "name": widget["label_text"],
                         "label": tk.Label(self.window, text=widget["label_text"]),
-                        "widget": tk.OptionMenu(self.window, option_var, *widget["options"]),
+                        "widget": widget_type, #readonly : if we want no editting
                         "options": option_var,
-                        "is_tag":widget["Tags"]
+                        "is_tag":widget["Tags"],
+                        "orig_data" : list(widget["options"])
                     })
         return section
 
@@ -330,55 +337,55 @@ class FormUI:
         tags = self.get_tags()
 
         docstring = f'''"""module for {data['Dataset name']} dataset
+    
+        Project name:
+        -------------
+        {data.pop('Project name', 'N/A')}
 
-Project name:
--------------
-{data.pop('Project name', 'N/A')}
+        Tags:
+        -----
+        {tags}
+        Researcher Name:
+        ----------------
+        {data.pop('Researcher Name', 'N/A')}
 
-Tags:
------
-{tags}
-Researcher Name:
-----------------
-{data.pop('Researcher Name', 'N/A')}
+        Dataset name:
+        -------------
+        {data.pop('Dataset name', 'N/A')}
 
-Dataset name:
--------------
-{data.pop('Dataset name', 'N/A')}
+        Description
+        -------------
+        {data.pop('Description', 'N/A')}
+        Version:
+        ---------
+        {data.pop('Version', 'N/A')}
 
-Description
--------------
-{data.pop('Description', 'N/A')}
-Version:
----------
-{data.pop('Version', 'N/A')}
+        Private or public:
+        -------------------
+        {data.pop('Private or public', 'N/A')}
 
-Private or public:
--------------------
-{data.pop('Private or public', 'N/A')}
+        Region:
+        --------
+        {data.pop('Region', 'N/A')}
 
-Region:
---------
-{data.pop('Region', 'N/A')}
+        Time Horizon:
+        -------------
+        {data.pop('Time Horizon From', 'N/A')} : {data.pop('Time Horizon To', 'N/A')}
 
-Time Horizon:
--------------
-{data.pop('Time Horizon From', 'N/A')} : {data.pop('Time Horizon To', 'N/A')}
+        Spatial Resolution:
+        -------------------
+        {data.pop('Spatial Resolution (km^2)', 'N/A')}
 
-Spatial Resolution:
--------------------
-{data.pop('Spatial Resolution (km^2)', 'N/A')}
-
-Link to access:
----------------
-{data.pop('Link to access', 'N/A')}
-Citation requirements:
-----------------------
-{data.pop('Citation requirements', 'N/A')}
-Licensing requirements:
------------------------
-{data.pop('Licensing requirements', 'N/A')}
-'''
+        Link to access:
+        ---------------
+        {data.pop('Link to access', 'N/A')}
+        Citation requirements:
+        ----------------------
+        {data.pop('Citation requirements', 'N/A')}
+        Licensing requirements:
+        -----------------------
+        {data.pop('Licensing requirements', 'N/A')}
+        '''
         # Add any remaining information to the docstring
         for key, value in data.items():
             docstring+="\n"
@@ -414,7 +421,8 @@ Licensing requirements:
         if not self.validate_dataset_name():
             return
         
-        copy.deepcopy(self.form_data)
+        #copy.deepcopy(self.form_data)
+        #self.update_yaml()
         docstring = self.create_submit_file(copy.deepcopy(self.form_data))
 
         if self.generate_page(docstring):
@@ -422,6 +430,25 @@ Licensing requirements:
             self.clear_form()
             self.hide_section(self.current_section)
             self.show_section(0)
+        
+    # def update_yaml(self)->None:
+    #         print(self.sections[0]["widgets"][1]['orig_data'])
+    #         print(self.form_data['Project name'])
+    #         if self.form_data['Project name'] not in self.sections[0]["widgets"][1]['orig_data']:
+    #             print("not")  
+    #             new_var = self.yaml_raw_data[0]['section']['widgets'][1]['options']
+    #             print(type(new_var))
+    #             print([self.form_data['Project name']] + self.sections[0]["widgets"][1]['orig_data'])
+    #             new_var = [self.form_data['Project name']] + self.sections[0]["widgets"][1]['orig_data']
+    #             print(new_var)
+    #             print(type(self.yaml_raw_data[0]['section']['widgets'][1]))
+    #             self.yaml_raw_data[0]['section']['widgets'][1].update({'options' : new_var})
+    #             print(self.yaml_raw_data)
+    #             self.yaml_file_path
+    #             with open(self.yaml_file_path, mode="wt", encoding="utf-8") as file:
+    #                 yaml.dump(self.yaml_raw_data, file)
+    #         else:
+    #             print("in")   
 
 
 if __name__ == "__main__":
