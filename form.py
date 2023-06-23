@@ -114,6 +114,7 @@ class FormUI:
         self.form_data = {}
         self.tags_data = {}
         self.yaml_raw_data = []
+        self.flag = True    # Set and check if default value exists
         # Add an image
         img = Image.open(folder_path + 'docs/_static/Logo2.png')
         width, height = img.size
@@ -154,18 +155,26 @@ class FormUI:
                     "type": "entry",
                     "name": widget["label_text"],
                     "label": tk.Label(self.window, text=widget["label_text"]),
-                    "widget": tk.Entry(self.window)
+                    "widget": tk.Entry(self.window, relief="solid")
                 })
             elif widget["type"] == "text":
                 section["widgets"].append({
                     "type": "text",
                     "name": widget["label_text"],
                     "label": tk.Label(self.window, text=widget["label_text"]),
-                    "widget": tk.Text(self.window, height=5,  width=40)
+                    "widget": tk.Text(self.window, height=5,  width=40, relief="solid")
                 })
+            # elif widget["type"] == "checkbox":
+            #     var1 = tk.IntVar()
+            #     check_box = tk.Checkbutton(self.window, text='Python',variable=var1, onvalue=1, offvalue=0)
+            #     section["widgets"].append({
+            #         "type": "checkbox",
+            #         "name": widget["label_text"],
+            #         "widget": check_box
+            #     })
             elif widget["type"] == "dropdown":
                 if widget.get("multi_select"):
-                    listbox = tk.Listbox(self.window, selectmode=tk.MULTIPLE, exportselection=0, height=len(widget["options"]))
+                    listbox = tk.Listbox(self.window, selectmode=tk.MULTIPLE, exportselection=0, height=len(widget["options"]), relief="solid")
                     for option in widget["options"]:
                         listbox.insert(tk.END, option)
                     section["widgets"].append({
@@ -178,7 +187,7 @@ class FormUI:
                 else:
                     option_var = tk.StringVar()
                     option_var.set(widget["options"][0])
-                    widget_type = ttk.Combobox(self.window, values=list(widget["options"]), textvariable=option_var)
+                    widget_type = ttk.Combobox(self.window, values=list(widget["options"]))  # , textvariable=option_var
                     widget_type['state'] = 'normal' if widget.get("editable")  else 'readonly'
                     section["widgets"].append({
                         "type": "dropdown_single",
@@ -201,9 +210,10 @@ class FormUI:
         for widget_dict in section["widgets"]:
             widget_dict["label"].pack()
             widget_dict["widget"].pack()
-            if widget_dict["name"] == "Citation requirements":
+            if widget_dict["name"] == "Citation requirements" and self.flag:
                 # Insert The Default value.
-                widget_dict["widget"].insert(tk.END, "Placeholder")    
+                widget_dict["widget"].insert(tk.END, "Placeholder")   
+                self.flag = False 
         self.current_section = section_index
         self.update_navigation_buttons()
 
@@ -215,12 +225,41 @@ class FormUI:
             widget_dict["widget"].pack_forget()
 
     def show_next_section(self):
+        section = self.sections[self.current_section ]           
+        for widget_dict in section["widgets"]:
+                widget_dict["label"].pack()
+                widget_dict["widget"].pack()
+        
+          
+        
+    #     if self.section["widgets"]["widget"].get():
+    #      pass     #your function where you want to jump
+    #  else:
+    #     print(' input required')
+        
+        
+        
+    #     if self.current_section == 77:
+
+    #         section = self.sections[self.current_section ]
+            
+    #         for widget_dict in section["widgets"]:
+    #             widget_dict["label"].pack()
+    #             widget_dict["widget"].pack()
+    #     else: 
+    #         return
+        #print(len(self.sections))
         if self.current_section < len(self.sections) - 1:
             # save data from current section
             self.save_data(self.current_section)
             # hide current section
             self.hide_section(self.current_section)
             # show next section
+            #print(self.current_section)   
+            #print(section["widgets"][0]["widget"].get()) 
+            self.current_section = 3 if self.current_section == 2 or self.current_section == 3 else self.current_section
+            self.current_section = self.current_section if self.current_section != 1 else (1 if section["widgets"][0]["widget"].get() == 'Spatial' else 2)
+            #print(self.current_section)
             self.current_section += 1
             self.show_section(self.current_section)
 
