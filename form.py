@@ -101,6 +101,8 @@ def convert_yaml_to_sections(yaml_file):
                 w["Tags"] = widget["Tags"]
             if "editable" in widget:
                 w["editable"] = widget["editable"]
+            if "required" in widget:
+                w["required"] = widget["required"]       
             widgets.append(w)
         sections.append(create_section(title, widgets))
     return sections, yaml_raw_data
@@ -114,7 +116,8 @@ class FormUI:
         self.form_data = {}
         self.tags_data = {}
         self.yaml_raw_data = []
-        self.flag = True    # Set and check if default value exists
+        self.flag = {"Citation requirements" : True,
+                     "Link to access" : True}    # Set and check if default value exists
         # Add an image
         img = Image.open(folder_path + 'docs/_static/Logo2.png')
         width, height = img.size
@@ -155,14 +158,16 @@ class FormUI:
                     "type": "entry",
                     "name": widget["label_text"],
                     "label": tk.Label(self.window, text=widget["label_text"]),
-                    "widget": tk.Entry(self.window, relief="solid")
+                    "widget": tk.Entry(self.window, relief="solid"),
+                    "required" : widget['required']
                 })
             elif widget["type"] == "text":
                 section["widgets"].append({
                     "type": "text",
                     "name": widget["label_text"],
                     "label": tk.Label(self.window, text=widget["label_text"]),
-                    "widget": tk.Text(self.window, height=5,  width=40, relief="solid")
+                    "widget": tk.Text(self.window, height=5,  width=40, relief="solid"),
+                    "required" : widget['required']
                 })
             # elif widget["type"] == "checkbox":
             #     var1 = tk.IntVar()
@@ -170,7 +175,8 @@ class FormUI:
             #     section["widgets"].append({
             #         "type": "checkbox",
             #         "name": widget["label_text"],
-            #         "widget": check_box
+            #         "widget": check_box,
+            #         "required" : widget['required']
             #     })
             elif widget["type"] == "dropdown":
                 if widget.get("multi_select"):
@@ -182,7 +188,8 @@ class FormUI:
                         "name": widget["label_text"],
                         "label": tk.Label(self.window, text=widget["label_text"]+" (Multi-Select)"),
                         "widget": listbox,
-                        "is_tag":widget["Tags"]
+                        "is_tag":widget["Tags"],
+                        "required" : widget['required']
                     })
                 else:
                     option_var = tk.StringVar()
@@ -196,10 +203,31 @@ class FormUI:
                         "widget": widget_type, #readonly : if we want no editting
                         "options": option_var,
                         "is_tag":widget["Tags"],
-                        "orig_data" : list(widget["options"])
+                        "orig_data" : list(widget["options"]),
+                        "required" : widget['required']
                     })
         return section
+    def validation(self, widg)->bool:
+        for _ , widget in enumerate(widg):
+            widget_type = widget["type"]
+            if widget["required"] == True:
+                if widget_type == "text":
+                    data = "" if len(widget['widget'].get("1.0", tk.END)) == 1 else widget['widget'].get("1.0", tk.END)
+                elif widget_type == "entry":
+                    data = widget['widget'].get()
+                elif widget_type == "dropdown_single":
+                    data = widget['options'].get()
+                elif widget_type == "dropdown_multi":
+                    selected_items = widget['widget'].curselection() #get selected items
+                    data = [widget['widget'].get(i) for i in selected_items]
 
+                if len(data) == 0:
+                    messagebox.showinfo('message', widget['name'] + " can\'t be empty")
+                    return False
+         
+        return True           
+                
+        
     def show_section(self, section_index):
 
         section = self.sections[section_index]
@@ -210,10 +238,17 @@ class FormUI:
         for widget_dict in section["widgets"]:
             widget_dict["label"].pack()
             widget_dict["widget"].pack()
-            if widget_dict["name"] == "Citation requirements" and self.flag: # Widget associated with the label and if it has already been changed.
+            if widget_dict["name"] == "Citation requirements" and self.flag["Citation requirements"]: # Widget associated with the label and if it has already been changed.
                 # Insert The Default value.
                 widget_dict["widget"].insert(tk.END, "Placeholder")   
-                self.flag = False 
+                self.flag["Citation requirements"] = False 
+                
+            elif widget_dict["name"] == "Link to access" and self.flag["Link to access"]: # Widget associated with the label and if it has already been changed.
+                # Insert The Default value.
+                Placeholder = 'For example "NREL (National Renewable Energy Laboratory). 2022. "2022 Annual Technology Baseline." Golden, CO: National Renewable Energy Laboratory. https://atb.nrel.gov/. "'
+                widget_dict["widget"].insert(tk.END, Placeholder)   
+                self.flag["Link to access"] = False     
+                
         self.current_section = section_index
         self.update_navigation_buttons()
 
@@ -225,31 +260,11 @@ class FormUI:
             widget_dict["widget"].pack_forget()
 
     def show_next_section(self):
-        section = self.sections[self.current_section ]           
-        for widget_dict in section["widgets"]:
-                widget_dict["label"].pack()
-                widget_dict["widget"].pack()
-        
-          
-        
-    #     if self.section["widgets"]["widget"].get():
-    #      pass     #your function where you want to jump
-    #  else:
-    #     print(' input required')
-        
-        
-        
-    #     if self.current_section == 77:
-
-    #         section = self.sections[self.current_section ]
-            
-    #         for widget_dict in section["widgets"]:
-    #             widget_dict["label"].pack()
-    #             widget_dict["widget"].pack()
-    #     else: 
-    #         return
-        #print(len(self.sections))
-        if self.current_section < len(self.sections) - 1:
+        section = self.sections[self.current_section ] # Retrieving data for the current page 
+        # To enforce required condition
+        local_flag = self.validation(section["widgets"])
+       
+        if self.current_section < len(self.sections) - 1 and local_flag == True:
             # save data from current section
             self.save_data(self.current_section)
             # hide current section
@@ -259,9 +274,11 @@ class FormUI:
             self.current_section = 3 if self.current_section == 2 or self.current_section == 3 else self.current_section
             # Assign current section value on the basis of wheather the user choose spatial or temporal as an option or nothing.
             self.current_section = self.current_section if self.current_section != 1 else (1 if section["widgets"][0]["widget"].get() == 'Spatial' else 2)
-            #print(self.current_section)
+            print(self.current_section)
             self.current_section += 1
             self.show_section(self.current_section)
+        elif local_flag == True:
+             self.submit_form()
 
     def show_prev_section(self):
         section = self.sections[1] # Retrieving data for the spatial/temporal option page 
@@ -286,7 +303,7 @@ class FormUI:
 
         if self.current_section == len(self.sections) - 1:
             self.next_button.config(text="Submit")
-            self.next_button.config(command=self.submit_form)
+            self.next_button.config(command=self.show_next_section)
         else:
             self.next_button.config(text="Next")
             self.next_button.config(command=self.show_next_section)
@@ -373,7 +390,7 @@ class FormUI:
                 for value in values:
                     # Add the tag and values to the tag_str
                     tag_str += f'{tag}:{value}, '
-                tag_str+='\n'
+                tag_str+='\n\t'
         return tag_str
 
     def create_submit_file(self, data):
