@@ -210,7 +210,7 @@ class FormUI:
         for widget_dict in section["widgets"]:
             widget_dict["label"].pack()
             widget_dict["widget"].pack()
-            if widget_dict["name"] == "Citation requirements" and self.flag:
+            if widget_dict["name"] == "Citation requirements" and self.flag: # Widget associated with the label and if it has already been changed.
                 # Insert The Default value.
                 widget_dict["widget"].insert(tk.END, "Placeholder")   
                 self.flag = False 
@@ -255,21 +255,26 @@ class FormUI:
             # hide current section
             self.hide_section(self.current_section)
             # show next section
-            #print(self.current_section)   
-            #print(section["widgets"][0]["widget"].get()) 
+            # Jump from spatial/temporal page to the citations page
             self.current_section = 3 if self.current_section == 2 or self.current_section == 3 else self.current_section
+            # Assign current section value on the basis of wheather the user choose spatial or temporal as an option or nothing.
             self.current_section = self.current_section if self.current_section != 1 else (1 if section["widgets"][0]["widget"].get() == 'Spatial' else 2)
             #print(self.current_section)
             self.current_section += 1
             self.show_section(self.current_section)
 
     def show_prev_section(self):
+        section = self.sections[1] # Retrieving data for the spatial/temporal option page 
         if self.current_section > 0:
             # save data from current section
             self.save_data(self.current_section)
             # hide current section
             self.hide_section(self.current_section)
-            # show previous section
+            # show previous section     
+            # Jump from spatial/temporal page to the options page
+            self.current_section = 2 if self.current_section == 2 or self.current_section == 3 else self.current_section
+            # Assign current section value on the basis of wheather the user choose spatial or temporal as an option or nothing.
+            self.current_section = self.current_section if self.current_section != 4 else (3 if section["widgets"][0]["widget"].get() == 'Spatial' else 4)
             self.current_section -= 1
             self.show_section(self.current_section)
 
