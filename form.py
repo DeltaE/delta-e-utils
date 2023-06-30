@@ -207,6 +207,7 @@ class FormUI:
                         "required" : widget['required']
                     })
         return section
+    
     def validation(self, widg)->bool:
         for _ , widget in enumerate(widg):
             widget_type = widget["type"]
@@ -226,8 +227,7 @@ class FormUI:
                     return False
          
         return True           
-                
-        
+                    
     def show_section(self, section_index):
 
         section = self.sections[section_index]
@@ -271,10 +271,9 @@ class FormUI:
             self.hide_section(self.current_section)
             # show next section
             # Jump from spatial/temporal page to the citations page
-            self.current_section = 3 if self.current_section == 2 or self.current_section == 3 else self.current_section
+            self.current_section = 4 if self.current_section == 2 or self.current_section == 3 or self.current_section == 4 else self.current_section
             # Assign current section value on the basis of wheather the user choose spatial or temporal as an option or nothing.
-            self.current_section = self.current_section if self.current_section != 1 else (1 if section["widgets"][0]["widget"].get() == 'Spatial' else 2)
-            print(self.current_section)
+            self.current_section = self.current_section if self.current_section != 1 else (1 if section["widgets"][0]["widget"].get() == 'Spatial' else (3 if section["widgets"][0]["widget"].get() == "Spatial and Temporal" else 2))
             self.current_section += 1
             self.show_section(self.current_section)
         elif local_flag == True:
@@ -289,9 +288,9 @@ class FormUI:
             self.hide_section(self.current_section)
             # show previous section     
             # Jump from spatial/temporal page to the options page
-            self.current_section = 2 if self.current_section == 2 or self.current_section == 3 else self.current_section
+            self.current_section = 2 if self.current_section == 2 or self.current_section == 3 or self.current_section == 4 else self.current_section
             # Assign current section value on the basis of wheather the user choose spatial or temporal as an option or nothing.
-            self.current_section = self.current_section if self.current_section != 4 else (3 if section["widgets"][0]["widget"].get() == 'Spatial' else 4)
+            self.current_section = self.current_section if self.current_section != 5 else (3 if section["widgets"][0]["widget"].get() == 'Spatial' else (5 if section["widgets"][0]["widget"].get() == "Spatial and Temporal" else 4))
             self.current_section -= 1
             self.show_section(self.current_section)
 
@@ -419,7 +418,7 @@ class FormUI:
         {data.pop('Description', 'N/A')}
         Version:
         ---------
-        {data.pop('Version', 'N/A')}
+        {data.pop('Version/Date of creation', 'N/A')}
 
         Private or public:
         -------------------
