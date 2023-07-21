@@ -21,6 +21,7 @@
           - Vancouver Island PyPSA
         multi_select: false
         Tags: false
+        editable : true
       - type: entry
         label_text: Dataset name
       - type: text
@@ -34,6 +35,7 @@
           - Public
         multi_select: false
         Tags: false
+        editable : false
 - section:
     title: Spatial and Temporal Information
     widgets:
@@ -45,6 +47,7 @@
           - Country
         multi_select: false
         Tags: false
+        editable : false
       - type: dropdown
         label_text: Time Horizon From
         options:
@@ -161,6 +164,7 @@
           - 2100
         multi_select: false
         Tags: false
+        editable : false
       - type: dropdown
         label_text: Time Horizon To
         options:
@@ -277,6 +281,7 @@
           - 2100
         multi_select: false
         Tags: false
+        editable : false
       - type: dropdown
         label_text: Spatial Resolution (km^2)
         options:
@@ -287,6 +292,7 @@
           - '>1000'
         multi_select: false
         Tags: false
+        editable : false
       - type: dropdown
         label_text: Temporal
         options:
@@ -298,6 +304,7 @@
           - Seconds
         multi_select: true
         Tags: true
+        editable : false
 - section:
     title: Using the dataset
     widgets:
@@ -321,6 +328,7 @@
           - Transportation
         multi_select: true
         Tags: true
+        editable : false
       - type: dropdown
         label_text: Uses
         options:
@@ -331,6 +339,7 @@
           - Transmission
         multi_select: true
         Tags: true
+        editable : false
       - type: dropdown
         label_text: Subject
         options:
@@ -340,6 +349,7 @@
           - Technical
         multi_select: true
         Tags: true
+        editable : false
 - section:
     title: Tags
     widgets:
@@ -351,6 +361,7 @@
           - Timeseries
         multi_select: true
         Tags: true
+        editable : false
       - type: dropdown
         label_text: ReCar
         options:
@@ -372,3 +383,4 @@
           - Wind
         multi_select: true
         Tags: true
+        editable : false
