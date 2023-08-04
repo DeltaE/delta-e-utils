@@ -10,3 +10,4 @@
 - [Tewodros Walle Mekonnen](https://github.com/DeltaE)
 - [Trevor Barnes](https://github.com/trevorb1)
 - [Yalda Saedi](https://github.com/YSaedi)
+- [Lakshay Sethi](https://github.com/Lakshay-sethi)
