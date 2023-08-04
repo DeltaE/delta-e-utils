@@ -119,7 +119,7 @@ class FormUI:
         self.flag = {"Citation requirements" : True,
                      "Link to access" : True}    # Set and check if default value exists
         # Add an image
-        img = Image.open(folder_path + 'docs/_static/Logo2.png')
+        img = Image.open(folder_path + 'docs\\_static\\Logo2.png')
         width, height = img.size
         aspect_ratio = width/height
         new_height = 50
@@ -130,7 +130,7 @@ class FormUI:
         panel.pack(side='top', fill='both', expand='yes')
 
         # create sections
-        self.yaml_file_path = folder_path + "input1.yaml" # testing yaml file
+        self.yaml_file_path = folder_path + "input.yaml" # testing yaml file
         self.sections_list, self.yaml_raw_data = convert_yaml_to_sections(self.yaml_file_path)
         self.sections = []
         for section in self.sections_list:
@@ -217,7 +217,7 @@ class FormUI:
                 elif widget_type == "entry":
                     data = widget['widget'].get()
                 elif widget_type == "dropdown_single":
-                    data = widget['options'].get()
+                    data = widget['widget'].get()
                 elif widget_type == "dropdown_multi":
                     selected_items = widget['widget'].curselection() #get selected items
                     data = [widget['widget'].get(i) for i in selected_items]
@@ -227,7 +227,18 @@ class FormUI:
                     return False
          
         return True           
-                    
+    
+    def comboBoxUpdater(self,event):
+        section = self.sections[self.current_section]
+        countries_list = ['Afghanistan', 'Aland Islands', 'Albania', 'Algeria', 'American Samoa', 'Andorra', 'Angola', 'Anguilla', 'Antarctica', 'Antigua and Barbuda', 'Argentina', 'Armenia', 'Aruba', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bermuda', 'Bhutan', 'Bolivia, Plurinational State of', 'Bonaire, Sint Eustatius and Saba', 'Bosnia and Herzegovina', 'Botswana', 'Bouvet Island', 'Brazil', 'British Indian Ocean Territory', 'Brunei Darussalam', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Cayman Islands', 'Central African Republic', 'Chad', 'Chile', 'China', 'Christmas Island', 'Cocos (Keeling) Islands', 'Colombia', 'Comoros', 'Congo', 'Congo, The Democratic Republic of the', 'Cook Islands', 'Costa Rica', "Côte d'Ivoire", 'Croatia', 'Cuba', 'Curaçao', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Falkland Islands (Malvinas)', 'Faroe Islands', 'Fiji', 'Finland', 'France', 'French Guiana', 'French Polynesia', 'French Southern Territories', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Gibraltar', 'Greece', 'Greenland', 'Grenada', 'Guadeloupe', 'Guam', 'Guatemala', 'Guernsey', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Heard Island and McDonald Islands', 'Holy See (Vatican City State)', 'Honduras', 'Hong Kong', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran, Islamic Republic of', 'Iraq', 'Ireland', 'Isle of Man', 'Israel', 'Italy', 'Jamaica', 'Japan', 'Jersey', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', "Korea, Democratic People's Republic of", 'Korea, Republic of', 'Kuwait', 'Kyrgyzstan', "Lao People's Democratic Republic", 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macao', 'Macedonia, Republic of', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Martinique', 'Mauritania', 'Mauritius', 'Mayotte', 'Mexico', 'Micronesia, Federated States of', 'Moldova, Republic of', 'Monaco', 'Mongolia', 'Montenegro', 'Montserrat', 'Morocco', 'Mozambique', 'Myanmar', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Caledonia', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Niue', 'Norfolk Island', 'Northern Mariana Islands', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Palestinian Territory, Occupied', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Pitcairn', 'Poland', 'Portugal', 'Puerto Rico', 'Qatar', 'Réunion', 'Romania', 'Russian Federation', 'Rwanda', 'Saint Barthélemy', 'Saint Helena, Ascension and Tristan da Cunha', 'Saint Kitts and Nevis', 'Saint Lucia', 'Saint Martin (French part)', 'Saint Pierre and Miquelon', 'Saint Vincent and the Grenadines', 'Samoa', 'San Marino', 'Sao Tome and Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Sint Maarten (Dutch part)', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Georgia and the South Sandwich Islands', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'South Sudan', 'Svalbard and Jan Mayen', 'Swaziland', 'Sweden', 'Switzerland', 'Syrian Arab Republic', 'Taiwan, Province of China', 'Tajikistan', 'Tanzania, United Republic of', 'Thailand', 'Timor-Leste', 'Togo', 'Tokelau', 'Tonga', 'Trinidad and Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Turks and Caicos Islands', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'United States Minor Outlying Islands', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Venezuela, Bolivarian Republic of', 'Viet Nam', 'Virgin Islands, British', 'Virgin Islands, U.S.', 'Wallis and Futuna', 'Yemen', 'Zambia', 'Zimbabwe']
+        if event.widget.get() == 'Country' or event.widget.get() == 'World' or event.widget.get() == 'Continent':
+            index = 0
+            for i, widget_dict in enumerate(section["widgets"]):
+                if widget_dict["widget"] == event.widget:
+                    index = i       
+            temp = countries_list if event.widget.get() == 'Country' else [ 'Asia', 'South America', 'North America', 'Africa', 'Europe', 'Antarctica', 'Australia']
+            section["widgets"][index + 1]["widget"]['values'] = temp
+              
     def show_section(self, section_index):
 
         section = self.sections[section_index]
@@ -240,15 +251,18 @@ class FormUI:
             widget_dict["widget"].pack()
             if widget_dict["name"] == "Citation requirements" and self.flag["Citation requirements"]: # Widget associated with the label and if it has already been changed.
                 # Insert The Default value.
-                widget_dict["widget"].insert(tk.END, "Placeholder")   
+                Placeholder = 'For example "NREL (National Renewable Energy Laboratory). 2022. "2022 Annual Technology Baseline." Golden, CO: National Renewable Energy Laboratory. https://atb.nrel.gov/. "'
+                widget_dict["widget"].insert(tk.END, Placeholder)     
                 self.flag["Citation requirements"] = False 
                 
             elif widget_dict["name"] == "Link to access" and self.flag["Link to access"]: # Widget associated with the label and if it has already been changed.
                 # Insert The Default value.
-                Placeholder = 'For example "NREL (National Renewable Energy Laboratory). 2022. "2022 Annual Technology Baseline." Golden, CO: National Renewable Energy Laboratory. https://atb.nrel.gov/. "'
+                Placeholder = 'For example  https://atb.nrel.gov/'
                 widget_dict["widget"].insert(tk.END, Placeholder)   
                 self.flag["Link to access"] = False     
-                
+
+            widget_dict['widget'].bind('<<ComboboxSelected>>', self.comboBoxUpdater)
+
         self.current_section = section_index
         self.update_navigation_buttons()
 
@@ -317,7 +331,7 @@ class FormUI:
             elif widget_type == "entry":
                 data = widget.get()
             elif widget_type == "dropdown_single":
-                data = widget_dict['options'].get()
+                data = widget_dict['widget'].get()
             elif widget_type == "dropdown_multi":
                 selected_items = widget_dict['widget'].curselection() #get selected items
                 data = [widget_dict['widget'].get(i) for i in selected_items]
@@ -396,62 +410,19 @@ class FormUI:
         # Define docstring format
         tags = self.get_tags()
 
-        docstring = f'''"""module for {data['Dataset name']} dataset
-    
-        Project name:
-        -------------
-        {data.pop('Project name', 'N/A')}
+        docstring = f'''"""\n        Module for {data['Dataset name']} Dataset
 
-        Tags:
-        -----
-        {tags}
-        Researcher Name:
-        ----------------
-        {data.pop('Researcher Name', 'N/A')}
-
-        Dataset name:
-        -------------
-        {data.pop('Dataset name', 'N/A')}
-
-        Description
-        -------------
-        {data.pop('Description', 'N/A')}
-        Version:
-        ---------
-        {data.pop('Version/Date of creation', 'N/A')}
-
-        Private or public:
-        -------------------
-        {data.pop('Private or public', 'N/A')}
-
-        Region:
-        --------
-        {data.pop('Region', 'N/A')}
-
-        Time Horizon:
-        -------------
-        {data.pop('Time Horizon From', 'N/A')} : {data.pop('Time Horizon To', 'N/A')}
-
-        Spatial Resolution:
-        -------------------
-        {data.pop('Spatial Resolution (km^2)', 'N/A')}
-
-        Link to access:
-        ---------------
-        {data.pop('Link to access', 'N/A')}
-        Citation requirements:
-        ----------------------
-        {data.pop('Citation requirements', 'N/A')}
-        Licensing requirements:
-        -----------------------
-        {data.pop('Licensing requirements', 'N/A')}
         '''
         # Add any remaining information to the docstring
         for key, value in data.items():
-            docstring+="\n"
-            docstring += f"{key}:\n{'-' * (len(key)+1)}\n{value}\n"
+            docstring +="\n"
+            docstring += f"        {key}:\n        {'-' * (len(key)+1)}\n        {value}\n"
         
-        docstring+=f'"""'
+        docstring+=f'''
+        Tags:
+        -----
+        {tags}\n
+        """'''
 
         # Return docstring
         return docstring
