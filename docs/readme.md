@@ -14,11 +14,11 @@ The Delta-E workflow is divided into two sub workflows to best serve our evercha
 
 [Developer Workflow](UserGuide.md#developer-workflow)
 
-**\_Fill here short discription**
+A developer is a user who wants to add or modify a dataset in this repository. This requires reading the contributing guide, knowing all details of the dataset to add, and understanding the use cases of the dataset.
 
 [Researcher Workflow](UserGuide.md#researcher-workflow)
 
-**\_Fill here short discription**
+A researcher is a user who wants to use a dataset in this repository. This includes searching for the dataset and automatically pulling the data into your scripts through installing the python package delta-e-utils .
 
 ## Dependencies
 
@@ -28,4 +28,4 @@ Delta-E is written and tested to be compatible with Python 3.6 and above.
 
 **A step by step guide explanation on how a researcher can use this repository.**
 
-![Delta E+ Dataset flow diagrams-Researcher Flowchart drawio](https://user-images.githubusercontent.com/121923771/225456085-07d44f61-79e7-48e5-a29e-cf3334f45c8e.png)
+![Delta E+ Dataset Flowchart](https://github.com/DeltaE/delta-e-utils/blob/207e95345fad3b75fbe295d966ccd8d5832fc717/docs/_static/Delta%20E+%20Dataset%20flow%20diagrams-Researcher%20Flowchart.png?raw=true)
