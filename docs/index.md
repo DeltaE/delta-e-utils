@@ -2,31 +2,15 @@
 
 This is the documentation of **delta-e**.
 
-:::{note}
-This is the main page of your project's [Sphinx] documentation.
-It is formatted in [reStructuredText]. Add additional pages
-by creating rst-files in `docs` and adding them to the [toctree] below.
-Use then [references] in order to link them from this page, e.g.
-{ref}`authors` and {ref}`changes`.
-
-It is also possible to refer to the documentation of other Python packages
-with the [Python domain syntax]. By default you can reference the
-documentation of [Sphinx], [Python], [NumPy], [SciPy], [matplotlib],
-[Pandas], [Scikit-Learn]. You can add more by extending the
-`intersphinx_mapping` in your Sphinx's `conf.py`.
-
-The pretty useful extension [autodoc] is activated by default and lets
-you include documentation from docstrings. Docstrings can be written in
-[Google style] (recommended!), [NumPy style] and [classical style].
-:::
-
 ## Contents
+
+**Getting Started**
 
 ```{toctree}
 :maxdepth: 2
 
 Overview <readme>
-About <About>
+User Guide <UserGuide>
 Contributions & Help <contributing>
 License <license>
 Authors <authors>

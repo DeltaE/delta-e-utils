@@ -1,34 +1,3 @@
-:::{note}
-
-THIS IS SUPPOSED TO BE AN EXAMPLE. MODIFY IT ACCORDING TO YOUR NEEDS!
-
-The document assumes you are using a source repository service that promotes a
-contribution model similar to [GitHub's fork and pull request workflow].
-While this is true for the majority of services (like GitHub, GitLab,
-BitBucket), it might not be the case for private repositories (e.g., when
-using Gerrit).
-
-Also notice that the code examples might refer to GitHub URLs or the text
-might use GitHub specific terminology (e.g., *Pull Request* instead of *Merge
-Request*).
-
-Please make sure to check the document having these assumptions in mind and 
-update things accordingly.
-:::
-
-:::{note}
-Provide the correct links/replacements at the bottom of the document. 
-:::
-
-:::{note}
-You might want to have a look on [PyScaffold's contributor's guide],
-
-especially if your project is open source. The text should be very similar to
-this template, but there are a few extra contents that you might decide to
-also include, like mentioning labels of your issue tracker or automated
-releases.
-:::
-
 # Contributing
 
 Welcome to `delta-e` contributor's guide.
@@ -66,27 +35,36 @@ you help us to identify the root cause of the issue.
 
 ## Documentation Improvements
 
-You can help improve `delta-e` docs by making them more readable and coherent, or
-by adding missing information and correcting mistakes.
+If you would like to contribute to improving the documentation, we welcome your help! Clear and comprehensive documentation is crucial for the success of any project, and your contributions can make a significant impact. Here are a few ways you can contribute:
+
+### Submit an issue
+
+Before you work on any non-trivial code contribution it's best to first create
+a report in the [issue tracker] to start a discussion on the subject.
+This often provides additional considerations and avoids unnecessary work.
+
+### Making Documentation Readable and Coherent
+
+One way to contribute is by improving the readability and coherence of the existing documentation. This involves rephrasing sentences, organizing content, and ensuring consistent formatting. By enhancing the clarity of the documentation, you can make it more accessible to users.
+
+### Adding Missing Information and Correcting Mistakes
+
+If you come across any gaps in the documentation or spot errors, you can contribute by adding missing information and correcting mistakes. This includes updating outdated examples, clarifying confusing sections, and addressing any inaccuracies you may find.
+
+### Making Changes to the Actual Documentation
 
 `delta-e` documentation uses [Sphinx] as its main documentation compiler.
 This means that the docs are kept in the same repository as the project code, and
-that any documentation update is done in the same way was a code contribution.
-
-:::{note}
-Don't forget to mention which markup language you are using.
-
-e.g.,  [reStructuredText] or [CommonMark] with [MyST] extensions.
-:::
+that any documentation update is done in the same way was a code contribution. **\_(Refer below to the Code Contributions section for more deatils)**
 
 :::{tip}
 Please notice that the [GitHub web interface] provides a quick way of
-propose changes in ``delta-e``'s files. While this mechanism can
+propose changes in `delta-e`'s files. While this mechanism can
 be tricky for normal code contributions, it works perfectly fine for
 contributing to the docs, and can be quite handy.
 
 If you are interested in trying this method out, please navigate to
-the ``docs`` folder in the source [repository], find which file you
+the `docs` folder in the source [repository], find which file you
 would like to propose changes and click in the little pencil icon at the
 top, to open [GitHub's code editor]. Once you finish editing the file,
 please write a message in the form at the bottom of the page describing
@@ -109,14 +87,6 @@ python3 -m http.server --directory 'docs/_build/html'
 ```
 
 ## Code Contributions
-
-:::{note}
-Please include a reference or explanation about the internals of the project.
-
-An architecture description, design principles or at least a summary of the
-main concepts will make it easy for potential contributors to get started
-quickly.
-:::
 
 ### Submit an issue
 
@@ -146,7 +116,7 @@ conda activate delta-e
 
 1. Create an user account on GitHub if you do not already have one.
 
-2. Fork the project [repository]: click on the *Fork* button near the top of the
+2. Fork the project [repository]: click on the _Fork_ button near the top of the
    page. This creates a copy of the code under your account on GitHub.
 
 3. Clone this copy to your local disk:
@@ -163,20 +133,6 @@ conda activate delta-e
    ```
 
    to be able to import the package under development in the Python REPL.
-
-    :::{note}
-    if you are not using pre-commit, please remove the following item:
-    :::
-
-5. Install [pre-commit]:
-
-   ```
-   pip install pre-commit
-   pre-commit install
-   ```
-
-   `delta-e` comes with a lot of hooks configured to automatically help the
-   developer to check the code being written.
 
 ### Implement your changes
 
@@ -201,15 +157,6 @@ conda activate delta-e
    ```
 
    to record your changes in [git].
-
-    :::{note}
-    if you are not using pre-commit, please remove the following item:
-    :::
-
-   Please make sure to see the validation messages from [pre-commit] and fix
-   any eventual issues.
-   This should automatically use [flake8]/[black] to check/fix the code style
-   in a way that is compatible with the project.
 
    :::{important}
    Don't forget to add unit tests and documentation in case your
@@ -248,19 +195,39 @@ conda activate delta-e
    to send your changes for review.
 
    :::{note}
-    if you are using GitHub, you can uncomment the following paragraph
+   if you are using GitHub, you can uncomment the following paragraph
 
-    Find more detailed information in [creating a PR]. You might also want to open
-    the PR as a draft first and mark it as ready for review after the feedbacks
-    from the continuous integration (CI) system or any required fixes.
+   Find more detailed information in [creating a PR]. You might also want to open
+   the PR as a draft first and mark it as ready for review after the feedbacks
+   from the continuous integration (CI) system or any required fixes.
    :::
 
-### Troubleshooting
+## Maintainer tasks
+
+### Releases
+
+If you are part of the group of maintainers, the following steps can be used to release a new version for
+`delta-e`:
+
+1. Ensure that all unit tests pass successfully and that the new release tag has been added within the code.
+2. Tag the current commit on the main branch with a release tag, such as `v1.2.3`.
+3. Push the new tag to the upstream [repository], e.g., `git push upstream v1.2.3`
+4. Clean up the dist and build folders to avoid confusion with previous builds and Sphinx docs.
+   You can use `tox -e clean` or manually remove the folders with `rm -rf dist build`.
+5. Run `tox -e build` and check that the files in `dist` have
+   the correct version (no `.dirty` or [git] hash) according to the [git] tag.
+   Also check the sizes of the distributions, if they are too big (e.g., >
+   500KB), unwanted clutter may have been accidentally included.
+6. Execute the command `pyinstaller --onefile --noconsole --name=app form.py` to create the new version of the app.
+
+## Troubleshooting
 
 The following tips can be used when facing problems to build or test the
 package:
 
-1. Make sure to fetch all the tags from the upstream [repository].
+1. Try using `python -m tox -e docs` if `tox -e docs`. In a similar vein add `python -m tox [anything]` if `tox` command doesn't work.
+
+2. Make sure to fetch all the tags from the upstream [repository].
    The command `git describe --abbrev=0 --tags` should return the version you
    are expecting. If you are trying to run CI scripts in a fork repository,
    make sure to push all the tags.
@@ -268,7 +235,7 @@ package:
    `.eggs`, as well as the `*.egg-info` folders in the `src` folder or
    potentially in the root of your project.
 
-2. Sometimes [tox] misses out when new dependencies are added, especially to
+3. Sometimes [tox] misses out when new dependencies are added, especially to
    `setup.cfg` and `docs/requirements.txt`. If you find any problems with
    missing dependencies when running a command with [tox], try to recreate the
    `tox` environment using the `-r` flag. For example, instead of:
@@ -283,7 +250,7 @@ package:
    tox -r -e docs
    ```
 
-3. Make sure to have a reliable [tox] installation that uses the correct
+4. Make sure to have a reliable [tox] installation that uses the correct
    Python version (e.g., 3.7+). When in doubt you can run:
 
    ```
@@ -303,67 +270,26 @@ package:
    .venv/bin/tox -e all
    ```
 
-4. [Pytest can drop you] in an interactive session in the case an error occurs.
+5. [Pytest can drop you] in an interactive session in the case an error occurs.
    In order to do that you need to pass a `--pdb` option (for example by
    running `tox -- -k <NAME OF THE FALLING TEST> --pdb`).
    You can also setup breakpoints manually instead of using the `--pdb` option.
 
-## Maintainer tasks
-
-### Releases
-
-:::{note}
-This section assumes you are using PyPI to publicly release your package.
-
-If instead you are using a different/private package index, please update
-the instructions accordingly.
-:::
-
-
-If you are part of the group of maintainers and have correct user permissions
-on [PyPI], the following steps can be used to release a new version for
-`delta-e`:
-
-1. Make sure all unit tests are successful.
-2. Tag the current commit on the main branch with a release tag, e.g., `v1.2.3`.
-3. Push the new tag to the upstream [repository], e.g., `git push upstream v1.2.3`
-4. Clean up the `dist` and `build` folders with `tox -e clean`
-   (or `rm -rf dist build`)
-   to avoid confusion with old builds and Sphinx docs.
-5. Run `tox -e build` and check that the files in `dist` have
-   the correct version (no `.dirty` or [git] hash) according to the [git] tag.
-   Also check the sizes of the distributions, if they are too big (e.g., >
-   500KB), unwanted clutter may have been accidentally included.
-6. Run `tox -e publish -- --repository pypi` and check that everything was
-   uploaded to [PyPI] correctly.
-
-[^contrib1]: Even though, these resources focus on open source projects and
-    communities, the general ideas behind collaborating with other developers
-    to collectively create software are general and can be applied to all sorts
-    of environments, including private companies and proprietary code bases.
-
 % <-- strart -->
-
-:::{note}
-Please review and change the following definitions:
-:::
 
 % <-- end -->
 
-[black]: https://pypi.org/project/black/
-[commonmark]: https://commonmark.org/
 [contribution-guide.org]: https://www.contribution-guide.org/
 [creating a pr]: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request
 [descriptive commit message]: https://chris.beams.io/posts/git-commit
 [docstrings]: https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html
 [first-contributions tutorial]: https://github.com/firstcontributions/first-contributions
-[flake8]: https://flake8.pycqa.org/en/stable/
 [git]: https://git-scm.com
 [github web interface]: https://docs.github.com/en/repositories/working-with-files/managing-files/editing-files
 [github's code editor]: https://docs.github.com/en/repositories/working-with-files/managing-files/editing-files
 [github's fork and pull request workflow]: https://guides.github.com/activities/forking/
 [guide created by freecodecamp]: https://github.com/FreeCodeCamp/how-to-contribute-to-open-source
-[issue tracker]: https://github.com/<USERNAME>/delta-e/issues
+[issue tracker]: https://github.com/DeltaE/delta-e-utils/issues
 [miniconda]: https://docs.conda.io/en/latest/miniconda.html
 [myst]: https://myst-parser.readthedocs.io/en/latest/syntax/syntax.html
 [other kinds of contributions]: https://opensource.guide/how-to-contribute
@@ -372,10 +298,9 @@ Please review and change the following definitions:
 [pyscaffold's contributor's guide]: https://pyscaffold.org/en/stable/contributing.html
 [pytest can drop you]: https://docs.pytest.org/en/stable/how-to/failures.html#using-python-library-pdb-with-pytest
 [python software foundation's code of conduct]: https://www.python.org/psf/conduct/
-[repository]: https://github.com/<USERNAME>/delta-e
+[repository]: https://github.com/DeltaE/delta-e-utils
 [restructuredtext]: https://www.sphinx-doc.org/en/master/usage/restructuredtext/
 [sphinx]: https://www.sphinx-doc.org/en/master/
 [tox]: https://tox.wiki/en/stable/
 [virtual environment]: https://realpython.com/python-virtual-environments-a-primer/
 [virtualenv]: https://virtualenv.pypa.io/en/stable/
-
