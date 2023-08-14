@@ -79,6 +79,8 @@ compile them using [tox]:
 tox -e docs
 ```
 
+(after having installed [tox] with `pip install tox` or `pipx`)
+
 and use Python's built-in web server for a preview in your web browser
 (`http://localhost:8000`):
 
@@ -195,8 +197,6 @@ conda activate delta-e
    to send your changes for review.
 
    :::{note}
-   if you are using GitHub, you can uncomment the following paragraph
-
    Find more detailed information in [creating a PR]. You might also want to open
    the PR as a draft first and mark it as ready for review after the feedbacks
    from the continuous integration (CI) system or any required fixes.
