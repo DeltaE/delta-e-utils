@@ -4,14 +4,12 @@
     - label_text: Researcher Name
       required: true
       type: entry
+      default_text : Lakshay
     - Tags: false
       editable: true
       label_text: Project name
       multi_select: false
       options:
-      - ''
-      - new proj
-      - dd
       - None
       - Atlantic fefefe
       - Atlantic Canada
@@ -32,12 +30,14 @@
     - label_text: Dataset name
       required: true
       type: entry
+      default_text : Test
     - label_text: Description
       required: true
       type: text
     - label_text: Version/Date of creation
       required: true
       type: entry
+      default_text : "23rd July 2023 or V1"
     - Tags: false
       editable: false
       label_text: Private or public
@@ -693,7 +693,7 @@
       type: dropdown
     - Tags: true
       editable: false
-      label_text: ReCar
+      label_text: Resource Carrier
       multi_select: true
       options:
       - Biomass

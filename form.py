@@ -103,6 +103,8 @@ def convert_yaml_to_sections(yaml_file):
                 w["editable"] = widget["editable"]
             if "required" in widget:
                 w["required"] = widget["required"]       
+            if "default_text" in widget:
+                w["default_text"] = widget["default_text"]   
             widgets.append(w)
         sections.append(create_section(title, widgets))
     return sections, yaml_raw_data
@@ -111,6 +113,9 @@ class FormUI:
     def __init__(self):
         self.window = tk.Tk()
         self.window.title("Form UI")
+        self.window.geometry("920x538")
+        self.window.configure(bg = "#B1B3EC")
+        self.window.resizable(False, False)
         self.current_section = 0
         self.sections = []
         self.form_data = {}
@@ -119,14 +124,14 @@ class FormUI:
         self.flag = {"Citation requirements" : True,
                      "Link to access" : True}    # Set and check if default value exists
         # Add an image
-        img = Image.open(folder_path + 'docs\\_static\\Logo2.png')
+        img = Image.open(folder_path + 'docs\\_static\\Logo2-removebg-preview.png')
         width, height = img.size
         aspect_ratio = width/height
-        new_height = 50
+        new_height = 70
         new_width = int(new_height*aspect_ratio)
         img = img.resize((new_width, new_height), Image.LANCZOS)
         img = ImageTk.PhotoImage(img)
-        panel = tk.Label(self.window, image=img)
+        panel = tk.Label(self.window, image=img, bg= "#B1B3EC")
         panel.pack(side='top', fill='both', expand='yes')
 
         # create sections
@@ -137,10 +142,25 @@ class FormUI:
             self.sections.append(self.create_section(section['title'], section['widgets']))
 
         # create navigation buttons
-        self.prev_button = tk.Button(self.window, text="Prev", state=tk.DISABLED, command=self.show_prev_section)
-        self.prev_button.pack(side=tk.LEFT)
-        self.next_button = tk.Button(self.window, text="Next", command=self.show_next_section)
-        self.next_button.pack(side=tk.RIGHT)
+        button_image_1 = ImageTk.PhotoImage(file=folder_path + 'docs\\_static\\button_1.png')
+        button_image_2 = ImageTk.PhotoImage(file=folder_path + 'docs\\_static\\button_2.png')
+        
+        self.prev_button = tk.Button(self.window, 
+                                     text="Prev", 
+                                     state=tk.DISABLED, 
+                                     command=self.show_prev_section, 
+                                     image=button_image_1,
+                                     borderwidth=0,
+                                     highlightthickness=0,
+                                     activebackground="#B1B3EC")
+        self.prev_button.pack(side=tk.LEFT, padx=30, pady= 200)
+        self.next_button = tk.Button(self.window, text="Next", 
+                                     command=self.show_next_section, 
+                                     image=button_image_2,
+                                     borderwidth=0,
+                                     highlightthickness=0,
+                                     activebackground="#B1B3EC")
+        self.next_button.pack(side=tk.RIGHT, padx=30, pady= 200)
 
         # show first section
         self.show_section(self.current_section)
@@ -149,25 +169,41 @@ class FormUI:
 
     def create_section(self, label_text, widgets):
         section = {
-            "label": tk.Label(self.window, text=label_text),
+            "label": tk.Label(self.window, text=label_text, bg= "#B1B3EC"),
+            "buffer": tk.Label(self.window, text="", bg= "#B1B3EC"), # buffer for spacing issues
             "widgets": []
         }
+        
         for widget in widgets:
             if widget["type"] == "entry":
+                frame = tk.Frame(self.window, bg= "#B1B3EC",width= 550, height = 50)
+                try:
+                    default_text = widget['default_text']
+                except:
+                    default_text = "Example: Placeholder"
+                
+                entry_widget = tk.Entry(frame, relief="solid")
+                entry_widget.insert(0, default_text)
+                entry_widget.config(fg='grey')
                 section["widgets"].append({
                     "type": "entry",
                     "name": widget["label_text"],
-                    "label": tk.Label(self.window, text=widget["label_text"]),
-                    "widget": tk.Entry(self.window, relief="solid"),
-                    "required" : widget['required']
+                    "label": tk.Label(frame, text=widget["label_text"], bg= "#B1B3EC",pady=5),
+                    "widget": entry_widget,
+                    "required" : widget['required'],
+                    "frame" : frame,
+                    "default_text" : default_text
                 })
+
             elif widget["type"] == "text":
+                frame = tk.Frame(self.window, bg= "#B1B3EC",width= 550, height = 100)
                 section["widgets"].append({
                     "type": "text",
                     "name": widget["label_text"],
-                    "label": tk.Label(self.window, text=widget["label_text"]),
-                    "widget": tk.Text(self.window, height=5,  width=40, relief="solid"),
-                    "required" : widget['required']
+                    "label": tk.Label(frame, text=widget["label_text"], bg= "#B1B3EC",pady=5),
+                    "widget": tk.Text(frame, height=5,  width=30, relief="solid"),
+                    "required" : widget['required'],
+                    "frame" : frame
                 })
             # elif widget["type"] == "checkbox":
             #     var1 = tk.IntVar()
@@ -180,31 +216,36 @@ class FormUI:
             #     })
             elif widget["type"] == "dropdown":
                 if widget.get("multi_select"):
-                    listbox = tk.Listbox(self.window, selectmode=tk.MULTIPLE, exportselection=0, height=len(widget["options"]), relief="solid")
+                    height_calculation = 120 if len(widget["options"])*20 <= 120 else len(widget["options"])*20 # To find the height of the multi choice dropbox
+                    frame = tk.Frame(self.window, bg= "#B1B3EC", width= 550, height = height_calculation)
+                    listbox = tk.Listbox(frame, selectmode=tk.MULTIPLE, exportselection=0, height=len(widget["options"]), relief="solid")
                     for option in widget["options"]:
                         listbox.insert(tk.END, option)
                     section["widgets"].append({
                         "type": "dropdown_multi",
                         "name": widget["label_text"],
-                        "label": tk.Label(self.window, text=widget["label_text"]+" (Multi-Select)"),
+                        "label": tk.Label(frame, text=widget["label_text"]+" (Multi-Select)", bg= "#B1B3EC",pady=5),
                         "widget": listbox,
-                        "is_tag":widget["Tags"],
-                        "required" : widget['required']
+                        "is_tag": widget["Tags"],
+                        "required" : widget['required'],
+                        "frame" : frame
                     })
                 else:
                     option_var = tk.StringVar()
+                    frame = tk.Frame(self.window, bg= "#B1B3EC", width= 550, height = 50)
                     option_var.set(widget["options"][0])
-                    widget_type = ttk.Combobox(self.window, values=list(widget["options"]))  # , textvariable=option_var
+                    widget_type = ttk.Combobox(frame, values=list(widget["options"]))  # , textvariable=option_var
                     widget_type['state'] = 'normal' if widget.get("editable")  else 'readonly'
                     section["widgets"].append({
                         "type": "dropdown_single",
                         "name": widget["label_text"],
-                        "label": tk.Label(self.window, text=widget["label_text"]),
+                        "label": tk.Label(frame, text=widget["label_text"], bg= "#B1B3EC",pady=5),
                         "widget": widget_type, #readonly : if we want no editting
                         "options": option_var,
-                        "is_tag":widget["Tags"],
+                        "is_tag": widget["Tags"],
                         "orig_data" : list(widget["options"]),
-                        "required" : widget['required']
+                        "required" : widget['required'],
+                        "frame" : frame
                     })
         return section
     
@@ -223,7 +264,7 @@ class FormUI:
                     data = [widget['widget'].get(i) for i in selected_items]
 
                 if len(data) == 0:
-                    messagebox.showinfo('message', widget['name'] + " can\'t be empty")
+                    messagebox.showinfo('Input Missing', widget['name'] + " can\'t be empty")
                     return False
          
         return True           
@@ -238,40 +279,63 @@ class FormUI:
                     index = i       
             temp = countries_list if event.widget.get() == 'Country' else [ 'Asia', 'South America', 'North America', 'Africa', 'Europe', 'Antarctica', 'Australia']
             section["widgets"][index + 1]["widget"]['values'] = temp
-              
+    
+    def handle_focus_in(self,event,default_text):
+        if event.widget.get() == default_text:
+            event.widget.delete(0, tk.END)
+        event.widget.config(fg='black')
+
+    def handle_focus_out(self,event,default_text):
+        if event.widget.get() == default_text or event.widget.get() == "":
+            event.widget.delete(0, tk.END)
+            event.widget.config(fg='grey')
+            event.widget.insert(0, default_text)
+             
     def show_section(self, section_index):
 
         section = self.sections[section_index]
         custom_font = font.Font(family='Helvetica', size=20, weight='bold')  # set a custom font
+        custom_font_body = font.Font(family='Helvetica', size=14, weight='bold')  # set a custom font
         section_label = section["label"]
         section_label.config(font=custom_font)  # increase font size of the label
         section_label.pack()
         for widget_dict in section["widgets"]:
-            widget_dict["label"].pack()
-            widget_dict["widget"].pack()
+            widget_label = widget_dict["label"]
+            widget_label.config(font=custom_font_body)
+            widget_label.pack(side=tk.LEFT, pady = 10)
+            widget_dict["widget"].pack(side=tk.RIGHT, pady = 10)
+            widget_dict['frame'].pack(anchor =tk.W)
+            widget_dict['frame'].pack_propagate(0)
+            
             if widget_dict["name"] == "Citation requirements" and self.flag["Citation requirements"]: # Widget associated with the label and if it has already been changed.
                 # Insert The Default value.
-                Placeholder = 'For example "NREL (National Renewable Energy Laboratory). 2022. "2022 Annual Technology Baseline." Golden, CO: National Renewable Energy Laboratory. https://atb.nrel.gov/. "'
-                widget_dict["widget"].insert(tk.END, Placeholder)     
+                default_text = 'For example "NREL (National Renewable Energy Laboratory). 2022. "2022 Annual Technology Baseline." Golden, CO: National Renewable Energy Laboratory. https://atb.nrel.gov/. "'
+                widget_dict["widget"].insert(tk.END, default_text)     
                 self.flag["Citation requirements"] = False 
                 
             elif widget_dict["name"] == "Link to access" and self.flag["Link to access"]: # Widget associated with the label and if it has already been changed.
                 # Insert The Default value.
-                Placeholder = 'For example  https://atb.nrel.gov/'
-                widget_dict["widget"].insert(tk.END, Placeholder)   
+                default_text = 'For example  https://atb.nrel.gov/'
+                widget_dict["widget"].insert(tk.END, default_text)   
                 self.flag["Link to access"] = False     
 
             widget_dict['widget'].bind('<<ComboboxSelected>>', self.comboBoxUpdater)
-
+            if widget_dict["type"] == "entry": 
+                widget_dict['widget'].bind("<FocusIn>", lambda event,default_text=widget_dict['default_text']:self.handle_focus_in(event,default_text))
+                widget_dict['widget'].bind("<FocusOut>", lambda event,default_text=widget_dict['default_text']:self.handle_focus_out(event,default_text))
+            
+        buffer = section["buffer"]
+        buffer.pack()
+        
         self.current_section = section_index
         self.update_navigation_buttons()
 
     def hide_section(self, section_index):
         section = self.sections[section_index]
         section["label"].pack_forget()
+        section['buffer'].pack_forget()
         for widget_dict in section["widgets"]:
-            widget_dict["label"].pack_forget()
-            widget_dict["widget"].pack_forget()
+            widget_dict["frame"].pack_forget()
 
     def show_next_section(self):
         section = self.sections[self.current_section ] # Retrieving data for the current page 
@@ -365,15 +429,15 @@ class FormUI:
         current_dir = ''
         dataset_name = self.form_data['Dataset name']
         if os.path.exists(folder_path + f"src\\delta_e\\{dataset_name}"):
-            messagebox.showinfo("Errror", "Dataset already exists!! either check if data set is same or rename the dataset")
+            messagebox.showerror("Error", "Dataset already exists!! Either check if data set is same or rename the dataset")
             return False
 
         os.mkdir(folder_path + f"src/delta_e/{dataset_name}")
         open(folder_path + f"src/delta_e/{dataset_name}/__init__.py", 'a').close()
-        open(folder_path + f"src/delta_e/{dataset_name}/{dataset_name}.py", 'a').close()
+        #open(folder_path + f"src/delta_e/{dataset_name}/{dataset_name}.py", 'a').close()
 
         # Create file in the directory
-        file_path = folder_path + f"src/delta_e/{dataset_name}/{dataset_name}.py"
+        file_path = folder_path + f"src/delta_e/{dataset_name}/__init__.py"
         with open(file_path, 'w') as f:
             f.write(docstring)
 
@@ -457,7 +521,7 @@ class FormUI:
         docstring = self.create_submit_file(copy.deepcopy(self.form_data))
 
         if self.generate_page(docstring):
-            messagebox.showinfo("Success", "Form submitted successfully! new file created at:" + folder_path + f"src/delta_e/{self.form_data['Dataset name']}/{self.form_data['Dataset name']}.py")
+            messagebox.showinfo("Success", "Form submitted successfully! new file created at: " + folder_path + f"src/delta_e/{self.form_data['Dataset name']}/{self.form_data['Dataset name']}.py")
             self.clear_form()
             self.hide_section(self.current_section)
             self.show_section(0)
