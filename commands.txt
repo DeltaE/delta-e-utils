@@ -1,0 +1,5 @@
+Common Commands that are used
+
+conda activate delta-e
+pyinstaller --onefile --noconsole --name=deltaE --icon=docs\_static\logo.png  form.py 
+conda env export > environment.yml
