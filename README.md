@@ -53,3 +53,7 @@ Description of repository
 3. Install the package in editing mode
 
 `pip install -U pip setuptools -e .`
+
+4. Load the environment file.
+
+`conda env create -f environment.yml`
