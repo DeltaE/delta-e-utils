@@ -2,13 +2,15 @@
 
 Welcome to Delta-E Docs! This documentation repository is designed to support the research projects of Delta E+ members. Its primary purpose is to provide a convenient way to search for and reuse previously used datasets in Delta E+ projects. By centralizing dataset information, researchers working on similar topics can easily locate and access relevant datasets.
 
-**Important Note:** Please be aware that this repository does not store the actual datasets used in projects. Its purpose is solely to provide information and facilitate the discovery of datasets from their original sources.
+:::{info}
+This repository does not store the actual datasets used in projects. Its purpose is solely to provide information and facilitate the discovery of datasets from their original sources.
+:::
 
 The success of this repository depends on the active involvement of Delta E+ members in maintaining and continuously adding datasets. Whenever a researcher discovers and utilizes a dataset for their project, it is expected that they contribute to the repository by filling out the appropriate form and adding the dataset information to Read the Docs.
 
 ## Target user group
 
-Delta-E is intended for researchers, planners and investigators who need a fast, easy-to-use tool for creating scripts for data sets. Delta-E is free software and can be arbitrarily extended.
+Delta-E is intended for researchers, planners and investigators who need a fast, easy-to-use tool for creating scripts for data sets. 
 
 The Delta-E workflow is divided into two sub workflows to best serve our everchanging community of researchers, planners and investigators:
 
