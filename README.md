@@ -56,4 +56,4 @@ Description of repository
 
 4. Load the environment file.
 
-`conda env create -f environment.yml`
+`conda env create -f environment.yaml`
